@@ -15,7 +15,13 @@ export interface AppTextScreenProps {
   style?: StyleProp<ViewStyle>;
 }
 
-function TextSectionView({ section, level = 2 }: { section: TextSection; level?: number }) {
+function TextSectionView({
+  section,
+  level = 2,
+}: {
+  section: TextSection;
+  level?: number;
+}) {
   const styles = useStyles();
 
   return (
@@ -24,7 +30,9 @@ function TextSectionView({ section, level = 2 }: { section: TextSection; level?:
         {section.title}
       </Text>
 
-      {section.content && <Text style={styles.sectionContent}>{section.content}</Text>}
+      {section.content && (
+        <Text style={styles.sectionContent}>{section.content}</Text>
+      )}
 
       {section.items && section.items.length > 0 && (
         <View style={styles.list}>
@@ -92,7 +100,7 @@ export function AppTextScreen({
   );
 }
 
-const useStyles = createThemedStyles((colors) => ({
+const useStyles = createThemedStyles(colors => ({
   scrollContent: {
     flexGrow: 1,
   },

@@ -59,7 +59,10 @@ export function SudobilityAppRN({
     content = <ThemeProviderComponent>{content}</ThemeProviderComponent>;
   } else {
     content = (
-      <ThemeProvider initialTheme={initialTheme} storageKeyPrefix={storageKeyPrefix}>
+      <ThemeProvider
+        initialTheme={initialTheme}
+        storageKeyPrefix={storageKeyPrefix}
+      >
         {content}
       </ThemeProvider>
     );

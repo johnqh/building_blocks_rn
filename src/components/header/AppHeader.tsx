@@ -27,34 +27,48 @@ export function AppHeader({
   const { colors } = useTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.card, borderBottomColor: colors.border }, style]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: colors.card, borderBottomColor: colors.border },
+        style,
+      ]}
+    >
       <View style={styles.leftSection}>
         {renderLeft ? (
           renderLeft()
         ) : (
           <Pressable onPress={logo.onPress} style={styles.logoContainer}>
             {logo.source && (
-              <Image source={logo.source} style={styles.logoImage} resizeMode="contain" />
+              <Image
+                source={logo.source}
+                style={styles.logoImage}
+                resizeMode='contain'
+              />
             )}
-            <Text style={[styles.appName, { color: colors.text }]}>{logo.appName}</Text>
+            <Text style={[styles.appName, { color: colors.text }]}>
+              {logo.appName}
+            </Text>
           </Pressable>
         )}
       </View>
 
       <View style={styles.rightSection}>
-        {menuItems?.filter((item) => item.show !== false).map((item) => {
-          const IconComponent = item.icon;
-          return (
-            <Pressable
-              key={item.id}
-              onPress={item.onPress}
-              style={styles.menuButton}
-              accessibilityLabel={item.label}
-            >
-              <IconComponent size={22} color={colors.textSecondary} />
-            </Pressable>
-          );
-        })}
+        {menuItems
+          ?.filter(item => item.show !== false)
+          .map(item => {
+            const IconComponent = item.icon;
+            return (
+              <Pressable
+                key={item.id}
+                onPress={item.onPress}
+                style={styles.menuButton}
+                accessibilityLabel={item.label}
+              >
+                <IconComponent size={22} color={colors.textSecondary} />
+              </Pressable>
+            );
+          })}
         {renderRight?.()}
       </View>
     </View>
@@ -74,7 +88,11 @@ export function createAppHeaderOptions(config: {
     headerTitle: () => (
       <View style={styles.logoContainer}>
         {config.logo.source && (
-          <Image source={config.logo.source} style={styles.logoImage} resizeMode="contain" />
+          <Image
+            source={config.logo.source}
+            style={styles.logoImage}
+            resizeMode='contain'
+          />
         )}
         <Text style={styles.headerTitle}>{config.logo.appName}</Text>
       </View>

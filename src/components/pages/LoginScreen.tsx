@@ -1,5 +1,14 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, TextInput, Pressable, ActivityIndicator, Image, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  ActivityIndicator,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
 import { createThemedStyles } from '../../utils/styles';
 
@@ -65,17 +74,20 @@ export function LoginScreen({
     }
   }, [email, password, isSignUp, onLogin, onSignUp]);
 
-  const handleSocialSignIn = useCallback(async (signIn: () => Promise<void>) => {
-    setError(null);
-    setLoading(true);
-    try {
-      await signIn();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'An error occurred.');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const handleSocialSignIn = useCallback(
+    async (signIn: () => Promise<void>) => {
+      setError(null);
+      setLoading(true);
+      try {
+        await signIn();
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'An error occurred.');
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
 
   return (
     <KeyboardAvoidingView
@@ -83,8 +95,12 @@ export function LoginScreen({
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.card}>
-        {logo && <Image source={logo} style={styles.logo} resizeMode="contain" />}
-        <Text style={styles.title}>{isSignUp ? `Sign up for ${appName}` : `Sign in to ${appName}`}</Text>
+        {logo && (
+          <Image source={logo} style={styles.logo} resizeMode='contain' />
+        )}
+        <Text style={styles.title}>
+          {isSignUp ? `Sign up for ${appName}` : `Sign in to ${appName}`}
+        </Text>
 
         {error && (
           <View style={styles.errorBox}>
@@ -98,11 +114,11 @@ export function LoginScreen({
             style={styles.input}
             value={email}
             onChangeText={setEmail}
-            placeholder="you@example.com"
-            autoCapitalize="none"
+            placeholder='you@example.com'
+            autoCapitalize='none'
             autoCorrect={false}
-            keyboardType="email-address"
-            textContentType="emailAddress"
+            keyboardType='email-address'
+            textContentType='emailAddress'
             editable={!loading}
           />
 
@@ -111,7 +127,7 @@ export function LoginScreen({
             style={styles.input}
             value={password}
             onChangeText={setPassword}
-            placeholder="Password"
+            placeholder='Password'
             secureTextEntry
             textContentType={isSignUp ? 'newPassword' : 'password'}
             editable={!loading}
@@ -119,12 +135,15 @@ export function LoginScreen({
           />
 
           <Pressable
-            style={[styles.submitButton, loading && styles.submitButtonDisabled]}
+            style={[
+              styles.submitButton,
+              loading && styles.submitButtonDisabled,
+            ]}
             onPress={handleSubmit}
             disabled={loading}
           >
             {loading ? (
-              <ActivityIndicator color="#ffffff" size="small" />
+              <ActivityIndicator color='#ffffff' size='small' />
             ) : (
               <Text style={styles.submitButtonText}>
                 {isSignUp ? 'Sign Up' : 'Sign In'}
@@ -147,7 +166,9 @@ export function LoginScreen({
                 onPress={() => handleSocialSignIn(onGoogleSignIn)}
                 disabled={loading}
               >
-                <Text style={styles.socialButtonText}>Continue with Google</Text>
+                <Text style={styles.socialButtonText}>
+                  Continue with Google
+                </Text>
               </Pressable>
             )}
 
@@ -174,7 +195,9 @@ export function LoginScreen({
             }}
           >
             <Text style={styles.toggleText}>
-              {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+              {isSignUp
+                ? 'Already have an account? Sign in'
+                : "Don't have an account? Sign up"}
             </Text>
           </Pressable>
         )}
@@ -183,7 +206,7 @@ export function LoginScreen({
   );
 }
 
-const useStyles = createThemedStyles((colors) => ({
+const useStyles = createThemedStyles(colors => ({
   container: {
     flex: 1,
     justifyContent: 'center',

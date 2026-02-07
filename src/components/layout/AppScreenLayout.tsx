@@ -41,23 +41,32 @@ export function AppScreenLayout({
 }: AppScreenLayoutProps) {
   const styles = useStyles();
 
-  const backgroundStyle = background === 'white' ? styles.bgWhite : styles.bgDefault;
+  const backgroundStyle =
+    background === 'white' ? styles.bgWhite : styles.bgDefault;
   const padding = paddingMap[contentPadding];
 
   const content = (
-    <View style={[{ paddingHorizontal: padding, flex: scrollable ? undefined : 1 }, contentStyle]}>
+    <View
+      style={[
+        { paddingHorizontal: padding, flex: scrollable ? undefined : 1 },
+        contentStyle,
+      ]}
+    >
       {children}
     </View>
   );
 
   return (
-    <SafeAreaView style={[styles.container, backgroundStyle, style]} edges={['top', 'left', 'right']}>
+    <SafeAreaView
+      style={[styles.container, backgroundStyle, style]}
+      edges={['top', 'left', 'right']}
+    >
       {header}
       {scrollable ? (
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
+          keyboardShouldPersistTaps='handled'
         >
           {content}
         </ScrollView>
@@ -69,7 +78,7 @@ export function AppScreenLayout({
   );
 }
 
-const useStyles = createThemedStyles((colors) => ({
+const useStyles = createThemedStyles(colors => ({
   container: {
     flex: 1,
   },

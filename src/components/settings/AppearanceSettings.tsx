@@ -18,13 +18,29 @@ export interface AppearanceSettingsProps {
 const THEME_OPTIONS = [
   { value: Theme.LIGHT, labelKey: 'appearance.theme.light', fallback: 'Light' },
   { value: Theme.DARK, labelKey: 'appearance.theme.dark', fallback: 'Dark' },
-  { value: Theme.SYSTEM, labelKey: 'appearance.theme.system', fallback: 'System' },
+  {
+    value: Theme.SYSTEM,
+    labelKey: 'appearance.theme.system',
+    fallback: 'System',
+  },
 ];
 
 const FONT_SIZE_OPTIONS = [
-  { value: FontSize.SMALL, labelKey: 'appearance.fontSize.small', fallback: 'Small' },
-  { value: FontSize.MEDIUM, labelKey: 'appearance.fontSize.medium', fallback: 'Medium' },
-  { value: FontSize.LARGE, labelKey: 'appearance.fontSize.large', fallback: 'Large' },
+  {
+    value: FontSize.SMALL,
+    labelKey: 'appearance.fontSize.small',
+    fallback: 'Small',
+  },
+  {
+    value: FontSize.MEDIUM,
+    labelKey: 'appearance.fontSize.medium',
+    fallback: 'Medium',
+  },
+  {
+    value: FontSize.LARGE,
+    labelKey: 'appearance.fontSize.large',
+    fallback: 'Large',
+  },
 ];
 
 export function AppearanceSettings({
@@ -37,7 +53,8 @@ export function AppearanceSettings({
   showInfoBox = false,
 }: AppearanceSettingsProps) {
   const styles = useStyles();
-  const translate = (key: string, fallback: string) => t?.(key, fallback) ?? fallback;
+  const translate = (key: string, fallback: string) =>
+    t?.(key, fallback) ?? fallback;
 
   return (
     <View style={[styles.container, style]}>
@@ -50,7 +67,7 @@ export function AppearanceSettings({
         {translate('appearance.theme.label', 'Theme')}
       </Text>
       <View style={styles.segmentedControl}>
-        {THEME_OPTIONS.map((option) => (
+        {THEME_OPTIONS.map(option => (
           <Pressable
             key={option.value}
             style={[
@@ -76,7 +93,7 @@ export function AppearanceSettings({
         {translate('appearance.fontSize.label', 'Font Size')}
       </Text>
       <View style={styles.segmentedControl}>
-        {FONT_SIZE_OPTIONS.map((option) => (
+        {FONT_SIZE_OPTIONS.map(option => (
           <Pressable
             key={option.value}
             style={[
@@ -102,7 +119,7 @@ export function AppearanceSettings({
           <Text style={styles.infoText}>
             {translate(
               'appearance.infoBox',
-              'Your appearance preferences are stored locally on this device.',
+              'Your appearance preferences are stored locally on this device.'
             )}
           </Text>
         </View>
@@ -111,7 +128,7 @@ export function AppearanceSettings({
   );
 }
 
-const useStyles = createThemedStyles((colors) => ({
+const useStyles = createThemedStyles(colors => ({
   container: {
     padding: 16,
   },

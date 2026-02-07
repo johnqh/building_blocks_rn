@@ -1,7 +1,17 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, Pressable, ScrollView, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
-import type { SubscriptionPageLabels, SubscriptionPageFormatters, AnalyticsTrackingParams } from '../../types';
+import type {
+  SubscriptionPageLabels,
+  SubscriptionPageFormatters,
+  AnalyticsTrackingParams,
+} from '../../types';
 import { createThemedStyles } from '../../utils/styles';
 
 export interface SubscriptionPackage {
@@ -54,28 +64,36 @@ export function SubscriptionScreen({
   const styles = useStyles();
   const [loading, setLoading] = useState<string | null>(null);
 
-  const formatPrice = formatters.formatPrice ?? ((price, currency) => `${currency} ${price.toFixed(2)}`);
+  const formatPrice =
+    formatters.formatPrice ??
+    ((price, currency) => `${currency} ${price.toFixed(2)}`);
 
-  const handlePurchase = useCallback(async (pkg: SubscriptionPackage) => {
-    if (loading) return;
-    setLoading(pkg.id);
-    onTrack?.({
-      eventType: 'subscription_action',
-      componentName: 'SubscriptionScreen',
-      label: 'purchase_tapped',
-      params: { package_id: pkg.id },
-    });
-    try {
-      const success = await onPurchase(pkg.id);
-      if (success) {
-        onPurchaseSuccess?.();
+  const handlePurchase = useCallback(
+    async (pkg: SubscriptionPackage) => {
+      if (loading) return;
+      setLoading(pkg.id);
+      onTrack?.({
+        eventType: 'subscription_action',
+        componentName: 'SubscriptionScreen',
+        label: 'purchase_tapped',
+        params: { package_id: pkg.id },
+      });
+      try {
+        const success = await onPurchase(pkg.id);
+        if (success) {
+          onPurchaseSuccess?.();
+        }
+      } catch (e) {
+        onError?.(
+          'Purchase Failed',
+          e instanceof Error ? e.message : 'An error occurred.'
+        );
+      } finally {
+        setLoading(null);
       }
-    } catch (e) {
-      onError?.('Purchase Failed', e instanceof Error ? e.message : 'An error occurred.');
-    } finally {
-      setLoading(null);
-    }
-  }, [loading, onPurchase, onPurchaseSuccess, onError, onTrack]);
+    },
+    [loading, onPurchase, onPurchaseSuccess, onError, onTrack]
+  );
 
   const handleRestore = useCallback(async () => {
     if (loading) return;
@@ -91,7 +109,10 @@ export function SubscriptionScreen({
         onRestoreSuccess?.();
       }
     } catch (e) {
-      onError?.('Restore Failed', e instanceof Error ? e.message : 'An error occurred.');
+      onError?.(
+        'Restore Failed',
+        e instanceof Error ? e.message : 'An error occurred.'
+      );
     } finally {
       setLoading(null);
     }
@@ -103,13 +124,18 @@ export function SubscriptionScreen({
       contentContainerStyle={styles.content}
     >
       <Text style={styles.title}>{labels.title ?? 'Subscription'}</Text>
-      {labels.subtitle && <Text style={styles.subtitle}>{labels.subtitle}</Text>}
+      {labels.subtitle && (
+        <Text style={styles.subtitle}>{labels.subtitle}</Text>
+      )}
 
       <View style={styles.packageList}>
-        {packages.map((pkg) => (
+        {packages.map(pkg => (
           <View
             key={pkg.id}
-            style={[styles.packageCard, pkg.isMostPopular && styles.packageCardPopular]}
+            style={[
+              styles.packageCard,
+              pkg.isMostPopular && styles.packageCardPopular,
+            ]}
           >
             {pkg.isMostPopular && (
               <View style={styles.popularBadge}>
@@ -145,12 +171,15 @@ export function SubscriptionScreen({
               </View>
             ) : (
               <Pressable
-                style={[styles.purchaseButton, loading === pkg.id && styles.purchaseButtonDisabled]}
+                style={[
+                  styles.purchaseButton,
+                  loading === pkg.id && styles.purchaseButtonDisabled,
+                ]}
                 onPress={() => handlePurchase(pkg)}
                 disabled={loading !== null}
               >
                 {loading === pkg.id ? (
-                  <ActivityIndicator color="#ffffff" size="small" />
+                  <ActivityIndicator color='#ffffff' size='small' />
                 ) : (
                   <Text style={styles.purchaseButtonText}>
                     {labels.purchase ?? 'Subscribe'}
@@ -163,12 +192,15 @@ export function SubscriptionScreen({
       </View>
 
       <Pressable
-        style={[styles.restoreButton, loading === 'restore' && styles.restoreButtonDisabled]}
+        style={[
+          styles.restoreButton,
+          loading === 'restore' && styles.restoreButtonDisabled,
+        ]}
         onPress={handleRestore}
         disabled={loading !== null}
       >
         {loading === 'restore' ? (
-          <ActivityIndicator color={styles.restoreText.color} size="small" />
+          <ActivityIndicator color={styles.restoreText.color} size='small' />
         ) : (
           <Text style={styles.restoreText}>
             {labels.restore ?? 'Restore Purchases'}
@@ -176,13 +208,15 @@ export function SubscriptionScreen({
         )}
       </Pressable>
       {labels.restoreDescription && (
-        <Text style={styles.restoreDescription}>{labels.restoreDescription}</Text>
+        <Text style={styles.restoreDescription}>
+          {labels.restoreDescription}
+        </Text>
       )}
     </ScrollView>
   );
 }
 
-const useStyles = createThemedStyles((colors) => ({
+const useStyles = createThemedStyles(colors => ({
   container: {
     flex: 1,
     backgroundColor: colors.background,

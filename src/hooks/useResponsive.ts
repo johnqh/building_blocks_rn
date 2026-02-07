@@ -3,9 +3,9 @@ import { useWindowDimensions } from 'react-native';
 export interface ResponsiveInfo {
   width: number;
   height: number;
-  isSmall: boolean;   // < 380
-  isMedium: boolean;  // 380-768
-  isLarge: boolean;   // > 768 (tablet)
+  isSmall: boolean; // < 380
+  isMedium: boolean; // 380-768
+  isLarge: boolean; // > 768 (tablet)
 }
 
 /**

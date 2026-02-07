@@ -1,4 +1,10 @@
-import React, { createContext, useCallback, useContext, useRef, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from 'react';
 import { View, Text, Animated, Pressable, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -25,40 +31,61 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const insets = useSafeAreaInsets();
 
   const removeToast = useCallback((id: string) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
+    setToasts(prev => prev.filter(t => t.id !== id));
   }, []);
 
   const addToast = useCallback(
     (message: string, type: ToastType = 'info', duration: number = 3000) => {
       const id = `toast-${++toastCounter}`;
-      setToasts((prev) => [...prev, { id, message, type, duration }]);
+      setToasts(prev => [...prev, { id, message, type, duration }]);
       if (duration > 0) {
         setTimeout(() => removeToast(id), duration);
       }
     },
-    [removeToast],
+    [removeToast]
   );
 
   return (
     <ToastContext.Provider value={{ addToast, removeToast }}>
       {children}
-      <View style={[styles.toastContainer, { top: insets.top + 8 }]} pointerEvents="box-none">
-        {toasts.map((toast) => (
-          <ToastItem key={toast.id} toast={toast} onDismiss={() => removeToast(toast.id)} />
+      <View
+        style={[styles.toastContainer, { top: insets.top + 8 }]}
+        pointerEvents='box-none'
+      >
+        {toasts.map(toast => (
+          <ToastItem
+            key={toast.id}
+            toast={toast}
+            onDismiss={() => removeToast(toast.id)}
+          />
         ))}
       </View>
     </ToastContext.Provider>
   );
 }
 
-function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: () => void }) {
+function ToastItem({
+  toast,
+  onDismiss,
+}: {
+  toast: Toast;
+  onDismiss: () => void;
+}) {
   const opacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(-20)).current;
 
   React.useEffect(() => {
     Animated.parallel([
-      Animated.timing(opacity, { toValue: 1, duration: 200, useNativeDriver: true }),
-      Animated.timing(translateY, { toValue: 0, duration: 200, useNativeDriver: true }),
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateY, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
     ]).start();
   }, [opacity, translateY]);
 
@@ -70,7 +97,12 @@ function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: () => void }
   }[toast.type];
 
   return (
-    <Animated.View style={[styles.toast, { backgroundColor: bgColor, opacity, transform: [{ translateY }] }]}>
+    <Animated.View
+      style={[
+        styles.toast,
+        { backgroundColor: bgColor, opacity, transform: [{ translateY }] },
+      ]}
+    >
       <Pressable style={styles.toastContent} onPress={onDismiss}>
         <Text style={styles.toastText}>{toast.message}</Text>
       </Pressable>

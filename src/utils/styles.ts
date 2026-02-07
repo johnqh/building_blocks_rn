@@ -23,7 +23,7 @@ type NamedStyles<T> = { [P in keyof T]: ViewStyle | TextStyle | ImageStyle };
  * ```
  */
 export function createThemedStyles<T extends NamedStyles<T>>(
-  factory: (colors: ThemeColors) => T,
+  factory: (colors: ThemeColors) => T
 ) {
   return function useStyles(): T {
     const { colors } = useTheme();

@@ -90,7 +90,7 @@ export function AppFooter({
   );
 }
 
-const useStyles = createThemedStyles((colors) => ({
+const useStyles = createThemedStyles(colors => ({
   container: {
     paddingHorizontal: 16,
     paddingVertical: 12,

@@ -1,4 +1,11 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Theme } from '../types';
@@ -29,7 +36,11 @@ interface ThemeProviderProps {
   storageKeyPrefix?: string;
 }
 
-export function ThemeProvider({ children, initialTheme, storageKeyPrefix }: ThemeProviderProps) {
+export function ThemeProvider({
+  children,
+  initialTheme,
+  storageKeyPrefix,
+}: ThemeProviderProps) {
   const systemColorScheme = useColorScheme();
   const [theme, setThemeState] = useState<Theme>(initialTheme ?? Theme.SYSTEM);
   const [loaded, setLoaded] = useState(false);
@@ -40,7 +51,7 @@ export function ThemeProvider({ children, initialTheme, storageKeyPrefix }: Them
 
   // Load persisted theme on mount
   useEffect(() => {
-    AsyncStorage.getItem(storageKey).then((stored) => {
+    AsyncStorage.getItem(storageKey).then(stored => {
       if (stored && Object.values(Theme).includes(stored as Theme)) {
         setThemeState(stored as Theme);
       }
@@ -53,7 +64,7 @@ export function ThemeProvider({ children, initialTheme, storageKeyPrefix }: Them
       setThemeState(newTheme);
       AsyncStorage.setItem(storageKey, newTheme);
     },
-    [storageKey],
+    [storageKey]
   );
 
   const resolvedTheme = useMemo((): 'light' | 'dark' => {
@@ -65,7 +76,7 @@ export function ThemeProvider({ children, initialTheme, storageKeyPrefix }: Them
 
   const colors = useMemo(
     () => (resolvedTheme === 'dark' ? darkColors : lightColors),
-    [resolvedTheme],
+    [resolvedTheme]
   );
 
   const value = useMemo<ThemeContextValue>(
@@ -76,7 +87,7 @@ export function ThemeProvider({ children, initialTheme, storageKeyPrefix }: Them
       isDark: resolvedTheme === 'dark',
       setTheme,
     }),
-    [theme, resolvedTheme, colors, setTheme],
+    [theme, resolvedTheme, colors, setTheme]
   );
 
   // Don't render children until we've loaded the persisted theme
@@ -84,7 +95,9 @@ export function ThemeProvider({ children, initialTheme, storageKeyPrefix }: Them
     return null;
   }
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
 }
 
 /**

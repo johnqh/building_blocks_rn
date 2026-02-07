@@ -1,7 +1,10 @@
 import React from 'react';
 import { View, Text, Pressable, ScrollView } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
-import type { SettingsSectionConfig, AnalyticsTrackingParams } from '../../types';
+import type {
+  SettingsSectionConfig,
+  AnalyticsTrackingParams,
+} from '../../types';
 import { createThemedStyles } from '../../utils/styles';
 
 export interface SettingsListScreenProps {
@@ -37,7 +40,10 @@ export function SettingsListScreen({
   };
 
   return (
-    <ScrollView style={[styles.container, style]} contentContainerStyle={styles.content}>
+    <ScrollView
+      style={[styles.container, style]}
+      contentContainerStyle={styles.content}
+    >
       <Text style={styles.title}>{title}</Text>
 
       <View style={styles.sectionList}>
@@ -60,7 +66,9 @@ export function SettingsListScreen({
               <View style={styles.sectionInfo}>
                 <Text style={styles.sectionLabel}>{section.label}</Text>
                 {section.description && (
-                  <Text style={styles.sectionDescription}>{section.description}</Text>
+                  <Text style={styles.sectionDescription}>
+                    {section.description}
+                  </Text>
                 )}
               </View>
               <Text style={styles.chevron}>{'\u203A'}</Text>
@@ -72,7 +80,7 @@ export function SettingsListScreen({
   );
 }
 
-const useStyles = createThemedStyles((colors) => ({
+const useStyles = createThemedStyles(colors => ({
   container: {
     flex: 1,
     backgroundColor: colors.background,

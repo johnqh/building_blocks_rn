@@ -1,7 +1,8 @@
 {
   "name": "@sudobility/building_blocks_rn",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Higher-level shared UI building blocks for Sudobility React Native apps",
+  "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -26,7 +27,11 @@
     "dev": "tsc -p tsconfig.build.json --watch",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit",
-    "test": "jest --passWithNoTests",
+    "test": "echo 'No tests configured yet'",
+    "lint": "eslint . --ext ts,tsx --ignore-pattern 'dist' --ignore-pattern 'node_modules' --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --ignore-pattern 'dist' --ignore-pattern 'node_modules' --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json}\"",
     "prepublishOnly": "bun run build"
   },
   "peerDependencies": {
@@ -60,6 +65,15 @@
     }
   },
   "devDependencies": {
+    "@eslint/js": "^9.38.0",
+    "@typescript-eslint/eslint-plugin": "^8.44.1",
+    "@typescript-eslint/parser": "^8.44.1",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "eslint-plugin-react-refresh": "^0.4.0",
+    "prettier": "^3.6.2",
     "@types/react": "~19.1.0",
     "typescript": "~5.9.2",
     "react": "19.1.0",

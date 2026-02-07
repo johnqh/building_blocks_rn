@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Pressable, Modal, FlatList, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  Modal,
+  FlatList,
+  SafeAreaView,
+} from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
 import type { LanguageConfig } from '../../constants/languages';
 import { DEFAULT_LANGUAGES } from '../../constants/languages';
@@ -28,7 +35,7 @@ export function LanguagePicker({
   const styles = useStyles();
   const [modalVisible, setModalVisible] = useState(false);
 
-  const currentLang = languages.find((l) => l.code === currentLanguage);
+  const currentLang = languages.find(l => l.code === currentLanguage);
 
   const handleSelect = (code: string) => {
     onLanguageChange?.(code);
@@ -41,15 +48,17 @@ export function LanguagePicker({
 
       <Pressable style={styles.trigger} onPress={() => setModalVisible(true)}>
         <Text style={styles.triggerText}>
-          {currentLang ? `${currentLang.flag} ${currentLang.name}` : currentLanguage}
+          {currentLang
+            ? `${currentLang.flag} ${currentLang.name}`
+            : currentLanguage}
         </Text>
         <Text style={styles.chevron}>{'\u25BC'}</Text>
       </Pressable>
 
       <Modal
         visible={modalVisible}
-        animationType="slide"
-        presentationStyle="pageSheet"
+        animationType='slide'
+        presentationStyle='pageSheet'
         onRequestClose={() => setModalVisible(false)}
       >
         <SafeAreaView style={styles.modal}>
@@ -62,7 +71,7 @@ export function LanguagePicker({
 
           <FlatList
             data={languages}
-            keyExtractor={(item) => item.code}
+            keyExtractor={item => item.code}
             renderItem={({ item }) => (
               <Pressable
                 style={[
@@ -86,7 +95,7 @@ export function LanguagePicker({
   );
 }
 
-const useStyles = createThemedStyles((colors) => ({
+const useStyles = createThemedStyles(colors => ({
   label: {
     fontSize: 15,
     fontWeight: '500',

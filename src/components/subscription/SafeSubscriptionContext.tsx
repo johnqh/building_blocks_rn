@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 export interface SubscriptionContextValue {
   isSubscribed: boolean;
@@ -15,7 +15,7 @@ export const STUB_SUBSCRIPTION_VALUE: SubscriptionContextValue = {
 };
 
 export const SafeSubscriptionContext = createContext<SubscriptionContextValue>(
-  STUB_SUBSCRIPTION_VALUE,
+  STUB_SUBSCRIPTION_VALUE
 );
 
 /**

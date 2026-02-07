@@ -2,10 +2,24 @@ import React, { createContext, useContext, useMemo } from 'react';
 
 export interface NetworkClient {
   request: <T>(url: string, options?: RequestInit) => Promise<T>;
-  get: <T>(url: string, options?: Omit<RequestInit, 'method' | 'body'>) => Promise<T>;
-  post: <T>(url: string, body?: unknown, options?: Omit<RequestInit, 'method'>) => Promise<T>;
-  put: <T>(url: string, body?: unknown, options?: Omit<RequestInit, 'method'>) => Promise<T>;
-  delete: <T>(url: string, options?: Omit<RequestInit, 'method' | 'body'>) => Promise<T>;
+  get: <T>(
+    url: string,
+    options?: Omit<RequestInit, 'method' | 'body'>
+  ) => Promise<T>;
+  post: <T>(
+    url: string,
+    body?: unknown,
+    options?: Omit<RequestInit, 'method'>
+  ) => Promise<T>;
+  put: <T>(
+    url: string,
+    body?: unknown,
+    options?: Omit<RequestInit, 'method'>
+  ) => Promise<T>;
+  delete: <T>(
+    url: string,
+    options?: Omit<RequestInit, 'method' | 'body'>
+  ) => Promise<T>;
 }
 
 export interface ApiContextValue {
@@ -46,7 +60,10 @@ export interface ApiProviderProps {
 }
 
 function createDefaultNetworkClient(): NetworkClient {
-  async function makeRequest<T>(url: string, options?: RequestInit): Promise<T> {
+  async function makeRequest<T>(
+    url: string,
+    options?: RequestInit
+  ): Promise<T> {
     const response = await fetch(url, {
       headers: { 'Content-Type': 'application/json', ...options?.headers },
       ...options,
@@ -59,10 +76,26 @@ function createDefaultNetworkClient(): NetworkClient {
     request: makeRequest,
     get: <T,>(url: string, options?: Omit<RequestInit, 'method' | 'body'>) =>
       makeRequest<T>(url, { ...options, method: 'GET' }),
-    post: <T,>(url: string, body?: unknown, options?: Omit<RequestInit, 'method'>) =>
-      makeRequest<T>(url, { ...options, method: 'POST', body: body ? JSON.stringify(body) : undefined }),
-    put: <T,>(url: string, body?: unknown, options?: Omit<RequestInit, 'method'>) =>
-      makeRequest<T>(url, { ...options, method: 'PUT', body: body ? JSON.stringify(body) : undefined }),
+    post: <T,>(
+      url: string,
+      body?: unknown,
+      options?: Omit<RequestInit, 'method'>
+    ) =>
+      makeRequest<T>(url, {
+        ...options,
+        method: 'POST',
+        body: body ? JSON.stringify(body) : undefined,
+      }),
+    put: <T,>(
+      url: string,
+      body?: unknown,
+      options?: Omit<RequestInit, 'method'>
+    ) =>
+      makeRequest<T>(url, {
+        ...options,
+        method: 'PUT',
+        body: body ? JSON.stringify(body) : undefined,
+      }),
     delete: <T,>(url: string, options?: Omit<RequestInit, 'method' | 'body'>) =>
       makeRequest<T>(url, { ...options, method: 'DELETE' }),
   };
@@ -90,7 +123,16 @@ export function ApiProvider({
       isLoading,
       refreshToken,
     }),
-    [networkClient, defaultClient, baseUrl, token, userId, isReady, isLoading, refreshToken],
+    [
+      networkClient,
+      defaultClient,
+      baseUrl,
+      token,
+      userId,
+      isReady,
+      isLoading,
+      refreshToken,
+    ]
   );
 
   return <ApiContext.Provider value={value}>{children}</ApiContext.Provider>;

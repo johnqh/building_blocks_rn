@@ -6,7 +6,6 @@
  */
 
 import type { ComponentType, ReactNode } from 'react';
-import type { StyleProp, ViewStyle, TextStyle } from 'react-native';
 
 // Re-export LanguageConfig from constants
 export type { LanguageConfig } from './constants/languages';
@@ -75,7 +74,15 @@ export interface FooterLinkItem {
  * Max width options for layout.
  * Maps to numeric pixel values in RN.
  */
-export type MaxWidth = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '4xl' | '7xl' | 'full';
+export type MaxWidth =
+  | 'sm'
+  | 'md'
+  | 'lg'
+  | 'xl'
+  | '2xl'
+  | '4xl'
+  | '7xl'
+  | 'full';
 
 /**
  * Content padding options.
