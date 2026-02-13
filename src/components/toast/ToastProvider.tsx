@@ -5,8 +5,10 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { View, Text, Animated, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Animated, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTheme } from '../../theme/ThemeContext';
+import { createThemedStyles } from '../../utils/styles';
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -29,6 +31,7 @@ let toastCounter = 0;
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const insets = useSafeAreaInsets();
+  const styles = useToastStyles();
 
   const removeToast = useCallback((id: string) => {
     setToasts(prev => prev.filter(t => t.id !== id));
@@ -71,6 +74,8 @@ function ToastItem({
   toast: Toast;
   onDismiss: () => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useToastStyles();
   const opacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(-20)).current;
 
@@ -90,10 +95,10 @@ function ToastItem({
   }, [opacity, translateY]);
 
   const bgColor = {
-    success: '#22c55e',
-    error: '#ef4444',
-    warning: '#f59e0b',
-    info: '#3b82f6',
+    success: colors.success,
+    error: colors.error,
+    warning: colors.warning,
+    info: colors.info,
   }[toast.type];
 
   return (
@@ -121,9 +126,9 @@ export function useToast() {
   return context;
 }
 
-const styles = StyleSheet.create({
+const useToastStyles = createThemedStyles((_colors) => ({
   toastContainer: {
-    position: 'absolute',
+    position: 'absolute' as const,
     left: 16,
     right: 16,
     zIndex: 9999,
@@ -141,11 +146,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     minHeight: 44,
-    justifyContent: 'center',
+    justifyContent: 'center' as const,
   },
   toastText: {
     color: '#ffffff',
     fontSize: 15,
-    fontWeight: '500',
+    fontWeight: '500' as const,
   },
-});
+}));

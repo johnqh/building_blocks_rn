@@ -49,9 +49,14 @@ export interface ThemeColors {
   surface: string;
   surfaceSecondary: string;
   error: string;
+  errorBg: string;
   success: string;
+  successBg: string;
+  successText: string;
   warning: string;
   info: string;
+  invertedText: string;
+  invertedBackground: string;
 }
 
 export const lightColors: ThemeColors = {
@@ -66,9 +71,14 @@ export const lightColors: ThemeColors = {
   surface: palette.white,
   surfaceSecondary: palette.gray[100],
   error: palette.error,
+  errorBg: '#fef2f2',
   success: palette.success,
+  successBg: '#dcfce7',
+  successText: '#16a34a',
   warning: palette.warning,
   info: palette.info,
+  invertedText: palette.white,
+  invertedBackground: palette.black,
 };
 
 export const darkColors: ThemeColors = {
@@ -83,7 +93,12 @@ export const darkColors: ThemeColors = {
   surface: palette.gray[800],
   surfaceSecondary: palette.gray[700],
   error: palette.error,
+  errorBg: '#451a1a',
   success: palette.success,
+  successBg: '#052e16',
+  successText: '#86efac',
   warning: palette.warning,
   info: palette.info,
+  invertedText: palette.black,
+  invertedBackground: palette.white,
 };

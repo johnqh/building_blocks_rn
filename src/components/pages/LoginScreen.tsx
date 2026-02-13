@@ -240,7 +240,7 @@ const useStyles = createThemedStyles(colors => ({
     marginBottom: 20,
   },
   errorBox: {
-    backgroundColor: '#fef2f2',
+    backgroundColor: colors.errorBg,
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
@@ -318,11 +318,11 @@ const useStyles = createThemedStyles(colors => ({
     color: colors.text,
   },
   appleButton: {
-    backgroundColor: '#000000',
-    borderColor: '#000000',
+    backgroundColor: colors.invertedBackground,
+    borderColor: colors.invertedBackground,
   },
   appleButtonText: {
-    color: '#ffffff',
+    color: colors.invertedText,
   },
   toggleLink: {
     marginTop: 16,

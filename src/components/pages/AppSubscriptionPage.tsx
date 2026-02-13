@@ -327,7 +327,7 @@ const useStyles = createThemedStyles(colors => ({
     paddingVertical: 4,
   },
   statusBadgeActive: {
-    backgroundColor: '#dcfce7',
+    backgroundColor: colors.successBg,
   },
   statusBadgeInactive: {
     backgroundColor: colors.surfaceSecondary,
@@ -337,7 +337,7 @@ const useStyles = createThemedStyles(colors => ({
     fontWeight: '600',
   },
   statusBadgeTextActive: {
-    color: '#16a34a',
+    color: colors.successText,
   },
   statusBadgeTextInactive: {
     color: colors.textSecondary,
