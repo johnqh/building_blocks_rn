@@ -126,7 +126,7 @@ export function useToast() {
   return context;
 }
 
-const useToastStyles = createThemedStyles((_colors) => ({
+const useToastStyles = createThemedStyles(_colors => ({
   toastContainer: {
     position: 'absolute' as const,
     left: 16,
