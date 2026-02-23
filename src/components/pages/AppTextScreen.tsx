@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Structured text content screen for React Native.
+ *
+ * Renders structured `TextPageContent` (title, sections with subsections,
+ * bullet lists, and contact block). Suitable for privacy policy, terms of
+ * service, and similar static content pages. Supports optional `ScreenWrapper`
+ * prop for custom layout wrapping.
+ */
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
@@ -144,12 +152,12 @@ const useStyles = createThemedStyles(colors => ({
   },
   listItem: {
     flexDirection: 'row',
-    paddingLeft: 8,
+    paddingStart: 8,
   },
   bullet: {
     fontSize: 15,
     color: colors.textSecondary,
-    marginRight: 8,
+    marginEnd: 8,
     lineHeight: 22,
   },
   listItemText: {

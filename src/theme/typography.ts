@@ -1,8 +1,12 @@
+/**
+ * @fileoverview Typography scale and font utilities for React Native.
+ *
+ * Defines font sizes (xs through 4xl), font weights (normal through bold),
+ * and a `getFontSizeMultiplier()` utility that maps the `FontSize` enum
+ * to a numeric scale factor (0.875 for small, 1.0 for medium, 1.125 for large).
+ */
 import { FontSize } from '../types';
 
-/**
- * Typography scale.
- */
 export const fontSizes = {
   xs: 12,
   sm: 14,

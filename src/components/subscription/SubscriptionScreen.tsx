@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Subscription plan selector screen for React Native.
+ *
+ * Simpler plan selector (no current status display) with package cards,
+ * purchase buttons, and a restore purchases flow. Uses the same
+ * purchase/restore callback pattern as AppSubscriptionPage.
+ */
 import React, { useState, useCallback } from 'react';
 import {
   View,
@@ -123,12 +130,14 @@ export function SubscriptionScreen({
       style={[styles.container, style]}
       contentContainerStyle={styles.content}
     >
-      <Text style={styles.title}>{labels.title ?? 'Subscription'}</Text>
+      <Text style={styles.title} accessibilityRole='header'>
+        {labels.title ?? 'Subscription'}
+      </Text>
       {labels.subtitle && (
         <Text style={styles.subtitle}>{labels.subtitle}</Text>
       )}
 
-      <View style={styles.packageList}>
+      <View style={styles.packageList} accessibilityRole='list'>
         {packages.map(pkg => (
           <View
             key={pkg.id}
@@ -136,6 +145,8 @@ export function SubscriptionScreen({
               styles.packageCard,
               pkg.isMostPopular && styles.packageCardPopular,
             ]}
+            accessibilityRole='summary'
+            accessibilityLabel={`${pkg.title}, ${formatPrice(pkg.price, pkg.currency)}${pkg.isMostPopular ? ', Most Popular' : ''}${pkg.isCurrent ? ', Current Plan' : ''}`}
           >
             {pkg.isMostPopular && (
               <View style={styles.popularBadge}>
@@ -177,6 +188,12 @@ export function SubscriptionScreen({
                 ]}
                 onPress={() => handlePurchase(pkg)}
                 disabled={loading !== null}
+                accessibilityRole='button'
+                accessibilityLabel={`${labels.purchase ?? 'Subscribe'} to ${pkg.title}`}
+                accessibilityState={{
+                  disabled: loading !== null,
+                  busy: loading === pkg.id,
+                }}
               >
                 {loading === pkg.id ? (
                   <ActivityIndicator color='#ffffff' size='small' />
@@ -198,6 +215,12 @@ export function SubscriptionScreen({
         ]}
         onPress={handleRestore}
         disabled={loading !== null}
+        accessibilityRole='button'
+        accessibilityLabel={labels.restore ?? 'Restore Purchases'}
+        accessibilityState={{
+          disabled: loading !== null,
+          busy: loading === 'restore',
+        }}
       >
         {loading === 'restore' ? (
           <ActivityIndicator color={styles.restoreText.color} size='small' />

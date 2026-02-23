@@ -1,3 +1,16 @@
+/**
+ * @fileoverview Modal-based language selector for React Native.
+ *
+ * Displays a trigger button showing the current language (flag + name) with
+ * a dropdown chevron. Pressing the trigger opens a full-screen modal with a
+ * FlatList of all available languages, each showing flag + name + checkmark
+ * for the current selection.
+ *
+ * @platform ios - Uses `presentationStyle="pageSheet"` for the modal, which
+ *   presents as a card that can be swiped to dismiss (iOS 13+).
+ * @platform android - Uses the default modal presentation (full-screen overlay).
+ *   The `presentationStyle` prop is ignored on Android.
+ */
 import React, { useState } from 'react';
 import {
   View,
@@ -46,7 +59,12 @@ export function LanguagePicker({
     <View style={style}>
       {label && <Text style={styles.label}>{label}</Text>}
 
-      <Pressable style={styles.trigger} onPress={() => setModalVisible(true)}>
+      <Pressable
+        style={styles.trigger}
+        onPress={() => setModalVisible(true)}
+        accessibilityRole='button'
+        accessibilityLabel={`${label ?? 'Language'}: ${currentLang?.name ?? currentLanguage}. Tap to change.`}
+      >
         <Text style={styles.triggerText}>
           {currentLang
             ? `${currentLang.flag} ${currentLang.name}`
@@ -63,8 +81,14 @@ export function LanguagePicker({
       >
         <SafeAreaView style={styles.modal}>
           <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>{label ?? 'Select Language'}</Text>
-            <Pressable onPress={() => setModalVisible(false)}>
+            <Text style={styles.modalTitle} accessibilityRole='header'>
+              {label ?? 'Select Language'}
+            </Text>
+            <Pressable
+              onPress={() => setModalVisible(false)}
+              accessibilityRole='button'
+              accessibilityLabel='Done, close language picker'
+            >
               <Text style={styles.closeButton}>Done</Text>
             </Pressable>
           </View>
@@ -79,6 +103,11 @@ export function LanguagePicker({
                   item.code === currentLanguage && styles.languageRowActive,
                 ]}
                 onPress={() => handleSelect(item.code)}
+                accessibilityRole='radio'
+                accessibilityState={{
+                  selected: item.code === currentLanguage,
+                }}
+                accessibilityLabel={`${item.name}${item.code === currentLanguage ? ', selected' : ''}`}
               >
                 <Text style={styles.flag}>{item.flag}</Text>
                 <Text style={styles.languageName}>{item.name}</Text>
@@ -157,7 +186,7 @@ const useStyles = createThemedStyles(colors => ({
   },
   flag: {
     fontSize: 20,
-    marginRight: 12,
+    marginEnd: 12,
   },
   languageName: {
     fontSize: 16,
@@ -172,6 +201,6 @@ const useStyles = createThemedStyles(colors => ({
   separator: {
     height: 1,
     backgroundColor: colors.border,
-    marginLeft: 48,
+    marginStart: 48,
   },
 }));

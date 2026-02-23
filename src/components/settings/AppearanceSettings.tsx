@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Appearance settings component for React Native.
+ *
+ * Provides segmented controls for theme (Light/Dark/System) and font size
+ * (Small/Medium/Large). Accepts an optional translation function `t(key, fallback)`
+ * for i18n support. If not provided, English fallback strings are used.
+ * An optional info box can be displayed explaining that preferences are stored locally.
+ */
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
@@ -16,7 +24,11 @@ export interface AppearanceSettingsProps {
 }
 
 const THEME_OPTIONS = [
-  { value: Theme.LIGHT, labelKey: 'appearance.theme.light', fallback: 'Light' },
+  {
+    value: Theme.LIGHT,
+    labelKey: 'appearance.theme.light',
+    fallback: 'Light',
+  },
   { value: Theme.DARK, labelKey: 'appearance.theme.dark', fallback: 'Dark' },
   {
     value: Theme.SYSTEM,
@@ -58,7 +70,7 @@ export function AppearanceSettings({
 
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.heading}>
+      <Text style={styles.heading} accessibilityRole='header'>
         {translate('appearance.title', 'Appearance')}
       </Text>
 
@@ -66,52 +78,66 @@ export function AppearanceSettings({
       <Text style={styles.label}>
         {translate('appearance.theme.label', 'Theme')}
       </Text>
-      <View style={styles.segmentedControl}>
-        {THEME_OPTIONS.map(option => (
-          <Pressable
-            key={option.value}
-            style={[
-              styles.segment,
-              theme === option.value && styles.segmentActive,
-            ]}
-            onPress={() => onThemeChange(option.value)}
-          >
-            <Text
-              style={[
-                styles.segmentText,
-                theme === option.value && styles.segmentTextActive,
-              ]}
+      <View
+        style={styles.segmentedControl}
+        accessibilityRole='radiogroup'
+        accessibilityLabel={translate('appearance.theme.label', 'Theme')}
+      >
+        {THEME_OPTIONS.map(option => {
+          const isSelected = theme === option.value;
+          return (
+            <Pressable
+              key={option.value}
+              style={[styles.segment, isSelected && styles.segmentActive]}
+              onPress={() => onThemeChange(option.value)}
+              accessibilityRole='radio'
+              accessibilityState={{ selected: isSelected }}
+              accessibilityLabel={translate(option.labelKey, option.fallback)}
             >
-              {translate(option.labelKey, option.fallback)}
-            </Text>
-          </Pressable>
-        ))}
+              <Text
+                style={[
+                  styles.segmentText,
+                  isSelected && styles.segmentTextActive,
+                ]}
+              >
+                {translate(option.labelKey, option.fallback)}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
 
       {/* Font size selector */}
       <Text style={[styles.label, { marginTop: 20 }]}>
         {translate('appearance.fontSize.label', 'Font Size')}
       </Text>
-      <View style={styles.segmentedControl}>
-        {FONT_SIZE_OPTIONS.map(option => (
-          <Pressable
-            key={option.value}
-            style={[
-              styles.segment,
-              fontSize === option.value && styles.segmentActive,
-            ]}
-            onPress={() => onFontSizeChange(option.value)}
-          >
-            <Text
-              style={[
-                styles.segmentText,
-                fontSize === option.value && styles.segmentTextActive,
-              ]}
+      <View
+        style={styles.segmentedControl}
+        accessibilityRole='radiogroup'
+        accessibilityLabel={translate('appearance.fontSize.label', 'Font Size')}
+      >
+        {FONT_SIZE_OPTIONS.map(option => {
+          const isSelected = fontSize === option.value;
+          return (
+            <Pressable
+              key={option.value}
+              style={[styles.segment, isSelected && styles.segmentActive]}
+              onPress={() => onFontSizeChange(option.value)}
+              accessibilityRole='radio'
+              accessibilityState={{ selected: isSelected }}
+              accessibilityLabel={translate(option.labelKey, option.fallback)}
             >
-              {translate(option.labelKey, option.fallback)}
-            </Text>
-          </Pressable>
-        ))}
+              <Text
+                style={[
+                  styles.segmentText,
+                  isSelected && styles.segmentTextActive,
+                ]}
+              >
+                {translate(option.labelKey, option.fallback)}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
 
       {showInfoBox && (

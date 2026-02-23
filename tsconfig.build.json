@@ -8,5 +8,5 @@
     "rootDir": "."
   },
   "include": ["src", "index.ts", "firebase.ts"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx", "src/__tests__"]
 }

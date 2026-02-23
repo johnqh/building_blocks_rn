@@ -1,6 +1,9 @@
 /**
- * Spacing scale for consistent layout.
- * Values in logical pixels.
+ * @fileoverview Spacing scale constants for React Native layout.
+ *
+ * Provides a consistent spacing scale (xs through 5xl) with values in
+ * logical pixels, used throughout all building_blocks_rn components
+ * for margins, paddings, and gaps.
  */
 export const spacing = {
   xs: 4,

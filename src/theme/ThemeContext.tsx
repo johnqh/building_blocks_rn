@@ -1,12 +1,27 @@
+/**
+ * @fileoverview Theme context and provider for React Native.
+ *
+ * Manages light/dark mode with automatic system detection via `useColorScheme()`.
+ * Persists user preference to AsyncStorage and delays rendering until the
+ * persisted theme is loaded (prevents theme flash on startup).
+ *
+ * Includes a subtle fade animation (250ms) when switching between light and dark
+ * modes to provide a smooth visual transition.
+ *
+ * Provides dual hooks:
+ * - `useTheme()` - throws if no ThemeProvider is present
+ * - `useThemeSafe()` - returns null if no ThemeProvider is present
+ */
 import React, {
   createContext,
   useCallback,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
-import { useColorScheme } from 'react-native';
+import { Animated, useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Theme } from '../types';
 import { type ThemeColors, lightColors, darkColors } from './colors';
@@ -44,6 +59,7 @@ export function ThemeProvider({
   const systemColorScheme = useColorScheme();
   const [theme, setThemeState] = useState<Theme>(initialTheme ?? Theme.SYSTEM);
   const [loaded, setLoaded] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(1)).current;
 
   const storageKey = storageKeyPrefix
     ? `${storageKeyPrefix}/${THEME_STORAGE_KEY}`
@@ -59,6 +75,28 @@ export function ThemeProvider({
     });
   }, [storageKey]);
 
+  const resolvedTheme = useMemo((): 'light' | 'dark' => {
+    if (theme === Theme.SYSTEM) {
+      return systemColorScheme === 'dark' ? 'dark' : 'light';
+    }
+    return theme === Theme.DARK ? 'dark' : 'light';
+  }, [theme, systemColorScheme]);
+
+  // Track previous resolved theme for animation
+  const prevResolvedThemeRef = useRef(resolvedTheme);
+
+  useEffect(() => {
+    if (loaded && prevResolvedThemeRef.current !== resolvedTheme) {
+      prevResolvedThemeRef.current = resolvedTheme;
+      fadeAnim.setValue(0.7);
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [resolvedTheme, loaded, fadeAnim]);
+
   const setTheme = useCallback(
     (newTheme: Theme) => {
       setThemeState(newTheme);
@@ -66,13 +104,6 @@ export function ThemeProvider({
     },
     [storageKey]
   );
-
-  const resolvedTheme = useMemo((): 'light' | 'dark' => {
-    if (theme === Theme.SYSTEM) {
-      return systemColorScheme === 'dark' ? 'dark' : 'light';
-    }
-    return theme === Theme.DARK ? 'dark' : 'light';
-  }, [theme, systemColorScheme]);
 
   const colors = useMemo(
     () => (resolvedTheme === 'dark' ? darkColors : lightColors),
@@ -96,7 +127,11 @@ export function ThemeProvider({
   }
 
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>
+      <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
+        {children}
+      </Animated.View>
+    </ThemeContext.Provider>
   );
 }
 

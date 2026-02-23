@@ -42,6 +42,17 @@ export type { ResponsiveInfo } from './src/hooks';
 export { ToastProvider, useToast } from './src/components/toast';
 export type { Toast, ToastType } from './src/components/toast';
 
+// Error Boundary
+export { ErrorBoundary } from './src/components/error';
+export type { ErrorBoundaryProps } from './src/components/error';
+
 // i18n
 export { initializeI18nRN, getI18n, i18n } from './src/i18n';
 export type { I18nConfig } from './src/i18n';
+
+// Native modules (desktop only)
+export {
+  authenticate as webAuthAuthenticate,
+  generateCodeVerifier as webAuthGenerateCodeVerifier,
+  sha256Base64Url as webAuthSha256Base64Url,
+} from './src/native/WebAuth';

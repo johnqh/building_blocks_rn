@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Settings menu list screen for React Native.
+ *
+ * Renders a scrollable settings menu with rows containing an icon,
+ * label, optional description, and a chevron indicator. Accepts an
+ * array of `SettingsSectionConfig` sections with an `onSectionPress(sectionId)`
+ * callback. Analytics tracking is supported via the `onTrack` prop.
+ */
 import React from 'react';
 import { View, Text, Pressable, ScrollView } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
@@ -44,9 +52,11 @@ export function SettingsListScreen({
       style={[styles.container, style]}
       contentContainerStyle={styles.content}
     >
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title} accessibilityRole='header'>
+        {title}
+      </Text>
 
-      <View style={styles.sectionList}>
+      <View style={styles.sectionList} accessibilityRole='list'>
         {sections.map((section, index) => {
           const IconComponent = section.icon;
           return (
@@ -57,6 +67,9 @@ export function SettingsListScreen({
                 index < sections.length - 1 && styles.sectionRowBorder,
               ]}
               onPress={() => handlePress(section)}
+              accessibilityRole='button'
+              accessibilityLabel={`${section.label}${section.description ? `, ${section.description}` : ''}`}
+              accessibilityHint={`Opens ${section.label} settings`}
             >
               {IconComponent && (
                 <View style={styles.iconContainer}>
@@ -116,7 +129,7 @@ const useStyles = createThemedStyles(colors => ({
     backgroundColor: colors.surfaceSecondary,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginEnd: 12,
   },
   iconColor: {
     color: colors.primary,
@@ -137,6 +150,6 @@ const useStyles = createThemedStyles(colors => ({
   chevron: {
     fontSize: 22,
     color: colors.textMuted,
-    marginLeft: 8,
+    marginStart: 8,
   },
 }));

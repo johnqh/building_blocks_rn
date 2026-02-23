@@ -1,3 +1,16 @@
+/**
+ * @fileoverview Login screen component for React Native.
+ *
+ * Provides an email/password form with sign-in and sign-up toggle, optional
+ * Google and Apple OAuth buttons, loading states with ActivityIndicator,
+ * and inline error display. Uses KeyboardAvoidingView for proper keyboard handling.
+ *
+ * @platform ios - Uses `behavior="padding"` for KeyboardAvoidingView, which
+ *   adjusts the bottom padding to keep form fields visible above the keyboard.
+ * @platform android - Uses `behavior="height"` for KeyboardAvoidingView, which
+ *   adjusts the component height. This is more reliable on Android where padding
+ *   behavior can conflict with system window insets.
+ */
 import React, { useState, useCallback } from 'react';
 import {
   View,
@@ -94,22 +107,39 @@ export function LoginScreen({
       style={[styles.container, style]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <View style={styles.card}>
+      <View style={styles.card} accessibilityLabel='Login form'>
         {logo && (
-          <Image source={logo} style={styles.logo} resizeMode='contain' />
+          <Image
+            source={logo}
+            style={styles.logo}
+            resizeMode='contain'
+            accessibilityLabel={`${appName} logo`}
+          />
         )}
-        <Text style={styles.title}>
+        <Text
+          style={styles.title}
+          accessibilityRole='header'
+          accessibilityLabel={
+            isSignUp ? `Sign up for ${appName}` : `Sign in to ${appName}`
+          }
+        >
           {isSignUp ? `Sign up for ${appName}` : `Sign in to ${appName}`}
         </Text>
 
         {error && (
-          <View style={styles.errorBox}>
+          <View
+            style={styles.errorBox}
+            accessibilityRole='alert'
+            accessibilityLabel={`Error: ${error}`}
+          >
             <Text style={styles.errorText}>{error}</Text>
           </View>
         )}
 
         <View style={styles.form}>
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label} accessibilityLabel='Email address'>
+            Email
+          </Text>
           <TextInput
             style={styles.input}
             value={email}
@@ -120,9 +150,13 @@ export function LoginScreen({
             keyboardType='email-address'
             textContentType='emailAddress'
             editable={!loading}
+            accessibilityLabel='Email address input'
+            accessibilityHint='Enter your email address'
           />
 
-          <Text style={styles.label}>Password</Text>
+          <Text style={styles.label} accessibilityLabel='Password'>
+            Password
+          </Text>
           <TextInput
             style={styles.input}
             value={password}
@@ -132,6 +166,8 @@ export function LoginScreen({
             textContentType={isSignUp ? 'newPassword' : 'password'}
             editable={!loading}
             onSubmitEditing={handleSubmit}
+            accessibilityLabel='Password input'
+            accessibilityHint='Enter your password'
           />
 
           <Pressable
@@ -141,6 +177,9 @@ export function LoginScreen({
             ]}
             onPress={handleSubmit}
             disabled={loading}
+            accessibilityRole='button'
+            accessibilityLabel={isSignUp ? 'Sign Up' : 'Sign In'}
+            accessibilityState={{ disabled: loading, busy: loading }}
           >
             {loading ? (
               <ActivityIndicator color='#ffffff' size='small' />
@@ -165,6 +204,9 @@ export function LoginScreen({
                 style={styles.socialButton}
                 onPress={() => handleSocialSignIn(onGoogleSignIn)}
                 disabled={loading}
+                accessibilityRole='button'
+                accessibilityLabel='Continue with Google'
+                accessibilityState={{ disabled: loading }}
               >
                 <Text style={styles.socialButtonText}>
                   Continue with Google
@@ -177,6 +219,9 @@ export function LoginScreen({
                 style={[styles.socialButton, styles.appleButton]}
                 onPress={() => handleSocialSignIn(onAppleSignIn)}
                 disabled={loading}
+                accessibilityRole='button'
+                accessibilityLabel='Continue with Apple'
+                accessibilityState={{ disabled: loading }}
               >
                 <Text style={[styles.socialButtonText, styles.appleButtonText]}>
                   Continue with Apple
@@ -193,6 +238,12 @@ export function LoginScreen({
               setIsSignUp(!isSignUp);
               setError(null);
             }}
+            accessibilityRole='button'
+            accessibilityLabel={
+              isSignUp
+                ? 'Already have an account? Sign in'
+                : "Don't have an account? Sign up"
+            }
           >
             <Text style={styles.toggleText}>
               {isSignUp

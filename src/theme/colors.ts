@@ -1,6 +1,10 @@
 /**
- * Color palette for building_blocks_rn.
- * Matches the web app's Tailwind color tokens.
+ * @fileoverview Color palette and theme color definitions for React Native.
+ *
+ * Defines the color palette (matching Tailwind CSS color tokens), the
+ * `ThemeColors` interface (20 properties), and both light and dark theme
+ * color objects. Light mode uses white/light-gray surfaces; dark mode uses
+ * gray-800/900 surfaces with inverted text colors.
  */
 
 export const palette = {

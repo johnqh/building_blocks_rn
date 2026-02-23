@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Full subscription management page for React Native.
+ *
+ * Displays the current subscription status (active/inactive badge, plan name,
+ * expiration date, auto-renew status), followed by package cards with features,
+ * pricing, "Most Popular" badge, and purchase buttons. Also includes a
+ * "Restore Purchases" button with loading states.
+ */
 import React, { useState, useCallback } from 'react';
 import {
   View,
@@ -127,7 +135,11 @@ export function AppSubscriptionPage({
     >
       {/* Current Status Section */}
       {currentStatus && (
-        <View style={styles.statusCard}>
+        <View
+          style={styles.statusCard}
+          accessibilityRole='summary'
+          accessibilityLabel={`Subscription status: ${currentStatus.isActive ? 'Active' : 'Inactive'}`}
+        >
           <View style={styles.statusHeader}>
             <View
               style={[
@@ -202,13 +214,14 @@ export function AppSubscriptionPage({
           <ActivityIndicator
             size='large'
             color={styles.loadingIndicator.color}
+            accessibilityLabel='Loading subscription packages'
           />
         </View>
       )}
 
       {/* Package Cards */}
       {!externalLoading && packages.length > 0 && (
-        <View style={styles.packageList}>
+        <View style={styles.packageList} accessibilityRole='list'>
           {packages.map(pkg => (
             <View
               key={pkg.id}
@@ -216,6 +229,8 @@ export function AppSubscriptionPage({
                 styles.packageCard,
                 pkg.isMostPopular && styles.packageCardPopular,
               ]}
+              accessibilityRole='summary'
+              accessibilityLabel={`${pkg.title}, ${formatPrice(pkg.price, pkg.currency)}${pkg.isMostPopular ? ', Most Popular' : ''}${pkg.isCurrent ? ', Current Plan' : ''}`}
             >
               {pkg.isMostPopular && (
                 <View style={styles.popularBadge}>
@@ -257,6 +272,12 @@ export function AppSubscriptionPage({
                   ]}
                   onPress={() => handlePurchase(pkg)}
                   disabled={loading !== null}
+                  accessibilityRole='button'
+                  accessibilityLabel={`${labels.purchase ?? 'Subscribe'} to ${pkg.title}`}
+                  accessibilityState={{
+                    disabled: loading !== null,
+                    busy: loading === pkg.id,
+                  }}
                 >
                   {loading === pkg.id ? (
                     <ActivityIndicator color='#ffffff' size='small' />
@@ -280,6 +301,12 @@ export function AppSubscriptionPage({
         ]}
         onPress={handleRestore}
         disabled={loading !== null}
+        accessibilityRole='button'
+        accessibilityLabel={labels.restore ?? 'Restore Purchases'}
+        accessibilityState={{
+          disabled: loading !== null,
+          busy: loading === 'restore',
+        }}
       >
         {loading === 'restore' ? (
           <ActivityIndicator color={styles.restoreText.color} size='small' />

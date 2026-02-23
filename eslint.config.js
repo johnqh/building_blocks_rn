@@ -155,6 +155,12 @@ export default [
 
   // Ignore patterns
   {
-    ignores: ['dist/**', '**/*.example.*', 'node_modules/**', 'vendor/**'],
+    ignores: [
+      'dist/**',
+      '**/*.example.*',
+      'node_modules/**',
+      'vendor/**',
+      'react-native.config.js',
+    ],
   },
 ];

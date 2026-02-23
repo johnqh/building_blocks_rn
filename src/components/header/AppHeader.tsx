@@ -1,3 +1,11 @@
+/**
+ * @fileoverview App header bar component for React Native.
+ *
+ * Renders a row with a left section (logo + app name) and a right section
+ * (icon buttons from `menuItems`). Both sections can be overridden via
+ * `renderLeft` and `renderRight` props. Also provides a
+ * `createAppHeaderOptions()` helper for React Navigation integration.
+ */
 import React from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
@@ -33,17 +41,25 @@ export function AppHeader({
         { backgroundColor: colors.card, borderBottomColor: colors.border },
         style,
       ]}
+      accessibilityRole='header'
+      accessibilityLabel={`${logo.appName} header`}
     >
       <View style={styles.leftSection}>
         {renderLeft ? (
           renderLeft()
         ) : (
-          <Pressable onPress={logo.onPress} style={styles.logoContainer}>
+          <Pressable
+            onPress={logo.onPress}
+            style={styles.logoContainer}
+            accessibilityRole='button'
+            accessibilityLabel={`${logo.appName} home`}
+          >
             {logo.source && (
               <Image
                 source={logo.source}
                 style={styles.logoImage}
                 resizeMode='contain'
+                accessibilityLabel={`${logo.appName} logo`}
               />
             )}
             <Text style={[styles.appName, { color: colors.text }]}>
@@ -63,6 +79,7 @@ export function AppHeader({
                 key={item.id}
                 onPress={item.onPress}
                 style={styles.menuButton}
+                accessibilityRole='button'
                 accessibilityLabel={item.label}
               >
                 <IconComponent size={22} color={colors.textSecondary} />
@@ -151,6 +168,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    marginRight: 8,
+    marginEnd: 8,
   },
 });

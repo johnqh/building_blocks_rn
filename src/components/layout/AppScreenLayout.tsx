@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Screen layout wrapper component for React Native.
+ *
+ * Provides a SafeAreaView (top, left, right edges) with optional header/footer
+ * slots, scrollable (default) or fixed content mode, configurable content padding,
+ * and background variants (theme default or card white).
+ */
 import React from 'react';
 import { View, ScrollView } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';

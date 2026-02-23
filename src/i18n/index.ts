@@ -1,8 +1,11 @@
 /**
- * React Native i18n initialization.
+ * @fileoverview React Native i18n initialization using i18next.
  *
- * Uses react-native-localize for device language detection
- * and bundled translations (no HTTP backend).
+ * Provides `initializeI18nRN()` for configuring the i18n instance with
+ * bundled translations (no HTTP backend). Uses `react-native-localize`
+ * (optional peer dependency) for device language detection, falling back
+ * to English. Safe to call multiple times -- only initializes once.
+ * Includes Chinese fallback chains: `zh -> zh -> en`, `zh-hant -> zh-hant -> zh -> en`.
  */
 
 import i18n from 'i18next';

@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Safe subscription context for React Native.
+ *
+ * Provides a context that returns a stub value (`isSubscribed: false`) when
+ * no provider wraps the tree. This allows components to read subscription
+ * state without crashing when a subscription provider is absent. Uses a
+ * default context value rather than null, so `useSafeSubscription()` never
+ * throws and never returns null.
+ */
 import { createContext, useContext } from 'react';
 
 export interface SubscriptionContextValue {

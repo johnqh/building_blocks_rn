@@ -1,3 +1,12 @@
+/**
+ * @fileoverview App footer component for React Native.
+ *
+ * Displays a copyright line with company name/link, version string, and
+ * configurable rights text. Below the copyright, it renders a row of
+ * footer links (e.g., Privacy, Terms) with dot separators. Links can use
+ * `url` (Linking.openURL), `routeName`, or `onPress`. Analytics tracking
+ * for link clicks is supported via the `onTrack` prop.
+ */
 import React from 'react';
 import { View, Text, Pressable, Linking } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
@@ -57,13 +66,18 @@ export function AppFooter({
   };
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} accessibilityLabel='App footer'>
       <View style={styles.topRow}>
         {version && <Text style={styles.versionText}>v{version}</Text>}
         <Text style={styles.copyrightText}>
           {copyrightYear ? `\u00A9 ${copyrightYear} ` : ''}
           {companyUrl ? (
-            <Text style={styles.companyLink} onPress={handleCompanyPress}>
+            <Text
+              style={styles.companyLink}
+              onPress={handleCompanyPress}
+              accessibilityRole='link'
+              accessibilityLabel={`${companyName} website`}
+            >
               {companyName}
             </Text>
           ) : (
@@ -75,11 +89,15 @@ export function AppFooter({
       </View>
 
       {links && links.length > 0 && (
-        <View style={styles.linksRow}>
+        <View style={styles.linksRow} accessibilityRole='list'>
           {links.map((link, index) => (
             <React.Fragment key={link.label}>
               {index > 0 && <Text style={styles.separator}>{'\u00B7'}</Text>}
-              <Pressable onPress={() => handleLinkPress(link)}>
+              <Pressable
+                onPress={() => handleLinkPress(link)}
+                accessibilityRole='link'
+                accessibilityLabel={link.label}
+              >
                 <Text style={styles.linkText}>{link.label}</Text>
               </Pressable>
             </React.Fragment>

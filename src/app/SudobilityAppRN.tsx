@@ -3,6 +3,8 @@
  *
  * Composes essential providers (SafeArea, i18n, Theme, QueryClient, Toast)
  * in a deterministic order. Each provider slot is optional and replaceable via props.
+ * The entire provider stack is wrapped in an ErrorBoundary to catch initialization
+ * errors and display a user-friendly fallback screen.
  */
 import React from 'react';
 import type { ComponentType, ReactNode } from 'react';
@@ -11,6 +13,8 @@ import { I18nextProvider } from 'react-i18next';
 import type { i18n as I18nInstance } from 'i18next';
 import { ThemeProvider } from '../theme/ThemeContext';
 import { ToastProvider } from '../components/toast/ToastProvider';
+import { ErrorBoundary } from '../components/error/ErrorBoundary';
+import type { ErrorBoundaryProps } from '../components/error/ErrorBoundary';
 import { Theme } from '../types';
 
 /**
@@ -32,17 +36,22 @@ export interface SudobilityAppRNProps {
   initialTheme?: Theme;
   /** Storage key prefix for persisted settings */
   storageKeyPrefix?: string;
+  /** Custom error boundary fallback component */
+  ErrorFallbackComponent?: ErrorBoundaryProps['FallbackComponent'];
+  /** Called when the error boundary catches an error */
+  onError?: ErrorBoundaryProps['onError'];
 }
 
 /**
  * Base app wrapper that composes providers in a specific order (outermost to innermost):
  *
- * 1. SafeAreaProvider (always present)
- * 2. I18nextProvider (if `i18n` provided)
- * 3. ThemeProvider (or custom `ThemeProviderComponent`)
- * 4. QueryClientProvider (if provided)
- * 5. ToastProvider (or custom `ToastProviderComponent`)
- * 6. AppProviders (custom additional providers)
+ * 1. ErrorBoundary (outermost, catches provider initialization errors)
+ * 2. SafeAreaProvider (always present)
+ * 3. I18nextProvider (if `i18n` provided)
+ * 4. ThemeProvider (or custom `ThemeProviderComponent`)
+ * 5. QueryClientProvider (if provided)
+ * 6. ToastProvider (or custom `ToastProviderComponent`)
+ * 7. AppProviders (custom additional providers, innermost)
  *
  * @example
  * ```tsx
@@ -68,6 +77,8 @@ export function SudobilityAppRN({
   AppProviders,
   initialTheme,
   storageKeyPrefix,
+  ErrorFallbackComponent,
+  onError,
 }: SudobilityAppRNProps) {
   let content = <>{children}</>;
 
@@ -110,5 +121,10 @@ export function SudobilityAppRN({
   // SafeArea (outermost)
   content = <SafeAreaProvider>{content}</SafeAreaProvider>;
 
-  return content;
+  // ErrorBoundary (very outermost)
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallbackComponent} onError={onError}>
+      {content}
+    </ErrorBoundary>
+  );
 }

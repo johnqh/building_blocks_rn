@@ -1,3 +1,13 @@
+/**
+ * @fileoverview API context and provider for React Native (Firebase entry only).
+ *
+ * Provides a network client context with typed HTTP methods (get, post, put, delete),
+ * authentication state (token, userId, isReady, isLoading), and optional token
+ * refresh. Uses a default fetch-based client with JSON content type, with support
+ * for custom network client overrides.
+ *
+ * Exports dual hooks: `useApi()` (throws if no provider) and `useApiSafe()` (returns null).
+ */
 import React, { createContext, useContext, useMemo } from 'react';
 
 export interface NetworkClient {

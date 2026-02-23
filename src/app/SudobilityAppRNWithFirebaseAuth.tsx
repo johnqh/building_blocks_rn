@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Firebase auth-aware app wrapper for Sudobility React Native apps.
+ *
+ * Extends `SudobilityAppRN` by inserting Firebase auth and API layers between
+ * the base providers and the app content. Wraps children with an `AuthProvider`
+ * (required) and an optional `ApiProviderComponent` (auth-aware API context).
+ */
 import React from 'react';
 import type { ComponentType, ReactNode } from 'react';
 import { SudobilityAppRN } from './SudobilityAppRN';

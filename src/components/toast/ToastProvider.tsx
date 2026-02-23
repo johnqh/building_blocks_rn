@@ -1,7 +1,31 @@
+/**
+ * @fileoverview Animated toast notification provider for React Native.
+ *
+ * Provides a context-based toast system with slide-down + fade-in animations.
+ * Toasts are positioned at the top of the screen, respecting safe area insets.
+ * Supports four toast types (success, error, warning, info) with configurable
+ * auto-dismiss duration and tap-to-dismiss.
+ *
+ * @platform ios - Safe area insets from notch/dynamic island are respected.
+ * @platform android - Safe area insets from status bar are respected.
+ *
+ * @example
+ * ```tsx
+ * // Wrap your app
+ * <ToastProvider>
+ *   <App />
+ * </ToastProvider>
+ *
+ * // Show a toast from any child
+ * const { addToast } = useToast();
+ * addToast('Saved!', 'success');
+ * ```
+ */
 import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -26,27 +50,46 @@ interface ToastContextValue {
 
 const ToastContext = createContext<ToastContextValue | null>(null);
 
-let toastCounter = 0;
-
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const insets = useSafeAreaInsets();
   const styles = useToastStyles();
+  const counterRef = useRef(0);
+  const timeoutsRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(
+    new Map()
+  );
 
   const removeToast = useCallback((id: string) => {
     setToasts(prev => prev.filter(t => t.id !== id));
+    const timeoutId = timeoutsRef.current.get(id);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutsRef.current.delete(id);
+    }
   }, []);
 
   const addToast = useCallback(
     (message: string, type: ToastType = 'info', duration: number = 3000) => {
-      const id = `toast-${++toastCounter}`;
+      const id = `toast-${++counterRef.current}`;
       setToasts(prev => [...prev, { id, message, type, duration }]);
       if (duration > 0) {
-        setTimeout(() => removeToast(id), duration);
+        const timeoutId = setTimeout(() => {
+          removeToast(id);
+        }, duration);
+        timeoutsRef.current.set(id, timeoutId);
       }
     },
     [removeToast]
   );
+
+  // Clean up all timeouts on unmount
+  useEffect(() => {
+    const timeouts = timeoutsRef.current;
+    return () => {
+      timeouts.forEach(timeoutId => clearTimeout(timeoutId));
+      timeouts.clear();
+    };
+  }, []);
 
   return (
     <ToastContext.Provider value={{ addToast, removeToast }}>
@@ -54,6 +97,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       <View
         style={[styles.toastContainer, { top: insets.top + 8 }]}
         pointerEvents='box-none'
+        accessibilityRole='alert'
+        accessibilityLiveRegion='polite'
       >
         {toasts.map(toast => (
           <ToastItem
@@ -107,8 +152,15 @@ function ToastItem({
         styles.toast,
         { backgroundColor: bgColor, opacity, transform: [{ translateY }] },
       ]}
+      accessibilityRole='alert'
+      accessibilityLabel={`${toast.type}: ${toast.message}`}
     >
-      <Pressable style={styles.toastContent} onPress={onDismiss}>
+      <Pressable
+        style={styles.toastContent}
+        onPress={onDismiss}
+        accessibilityRole='button'
+        accessibilityLabel={`Dismiss notification: ${toast.message}`}
+      >
         <Text style={styles.toastText}>{toast.message}</Text>
       </Pressable>
     </Animated.View>

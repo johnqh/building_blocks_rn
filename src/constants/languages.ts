@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Language configuration constants for React Native i18n.
+ *
+ * Defines the `LanguageConfig` type, a default set of 16 supported languages
+ * with emoji flags, the `RTL_LANGUAGES` array (currently Arabic), and an
+ * `isRTL()` helper function for checking if a language code uses
+ * right-to-left text direction.
+ */
+
 export interface LanguageConfig {
   code: string;
   name: string;
