@@ -5,11 +5,11 @@
 Higher-level shared UI building blocks for Sudobility React Native apps. Provides pre-built screens (login, settings, subscriptions), theming, i18n, and app shell components -- the RN counterpart to `@sudobility/building_blocks` (web). This package is designed to be consumed by downstream Expo/React Native apps and supplies composable providers, themed components, and opinionated layout primitives.
 
 - **Package**: `@sudobility/building_blocks_rn`
-- **Version**: 0.0.6
+- **Version**: 0.0.8
 - **License**: BUSL-1.1
 - **Module format**: ESM (`"type": "module"`)
 - **Package Manager**: Bun (never npm)
-- **TypeScript**: ~5.9, target ES2020, bundler module resolution, strict mode
+- **TypeScript**: ~5.9.2, target ES2020, bundler module resolution, strict mode
 - **Build output**: `dist/` (declarations + JS)
 
 ## Two Entry Points (Main vs Firebase)
@@ -470,4 +470,4 @@ The root `index.ts` and `firebase.ts` re-export from `src/` submodules. This sep
 | `@typescript-eslint/*` | ^8.44.1 | TypeScript ESLint integration |
 | `eslint-plugin-react-hooks` | ^7.0.0 | React Hooks lint rules |
 | `@tanstack/react-query` | ^5.90.19 | Dev-time type checking |
-| `@sudobility/types` | ^1.9.51 | Dev-time type checking |
+| `@sudobility/types` | ^1.9.53 | Dev-time type checking |

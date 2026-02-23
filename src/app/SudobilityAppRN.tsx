@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Base app wrapper for Sudobility React Native apps.
+ *
+ * Composes essential providers (SafeArea, i18n, Theme, QueryClient, Toast)
+ * in a deterministic order. Each provider slot is optional and replaceable via props.
+ */
 import React from 'react';
 import type { ComponentType, ReactNode } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -7,6 +13,9 @@ import { ThemeProvider } from '../theme/ThemeContext';
 import { ToastProvider } from '../components/toast/ToastProvider';
 import { Theme } from '../types';
 
+/**
+ * Props for the SudobilityAppRN base app wrapper.
+ */
 export interface SudobilityAppRNProps {
   children: ReactNode;
   /** Pre-configured i18n instance */
@@ -25,6 +34,31 @@ export interface SudobilityAppRNProps {
   storageKeyPrefix?: string;
 }
 
+/**
+ * Base app wrapper that composes providers in a specific order (outermost to innermost):
+ *
+ * 1. SafeAreaProvider (always present)
+ * 2. I18nextProvider (if `i18n` provided)
+ * 3. ThemeProvider (or custom `ThemeProviderComponent`)
+ * 4. QueryClientProvider (if provided)
+ * 5. ToastProvider (or custom `ToastProviderComponent`)
+ * 6. AppProviders (custom additional providers)
+ *
+ * @example
+ * ```tsx
+ * import { SudobilityAppRN } from '@sudobility/building_blocks_rn';
+ *
+ * function App() {
+ *   return (
+ *     <SudobilityAppRN i18n={i18n} initialTheme={Theme.SYSTEM}>
+ *       <NavigationContainer>
+ *         <RootNavigator />
+ *       </NavigationContainer>
+ *     </SudobilityAppRN>
+ *   );
+ * }
+ * ```
+ */
 export function SudobilityAppRN({
   children,
   i18n,

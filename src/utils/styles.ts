@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Themed style utilities for React Native.
+ *
+ * Provides `createThemedStyles()`, the standard pattern for creating
+ * theme-reactive StyleSheet objects used by every component in this package.
+ */
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
@@ -8,6 +14,13 @@ type NamedStyles<T> = { [P in keyof T]: ViewStyle | TextStyle | ImageStyle };
 
 /**
  * Create a hook that generates themed styles.
+ *
+ * Returns a custom hook that, when called inside a component, produces
+ * a memoized `StyleSheet` object derived from the current theme colors.
+ * Styles recompute only when the theme changes (light/dark switch).
+ *
+ * @param factory - Function that receives `ThemeColors` and returns a style object
+ * @returns A React hook that returns the themed StyleSheet
  *
  * @example
  * ```tsx
