@@ -1,20 +1,17 @@
 {
   "name": "@sudobility/building_blocks_rn",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Higher-level shared UI building blocks for Sudobility React Native apps",
   "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
     "./firebase": {
       "import": "./dist/firebase.js",
-      "require": "./dist/firebase.js",
       "types": "./dist/firebase.d.ts"
     }
   },
@@ -73,7 +70,7 @@
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/native": "^7.1.28",
     "@react-navigation/native-stack": "^7.10.1",
-    "@sudobility/types": "^1.9.55",
+    "@sudobility/types": "^1.9.57",
     "@tanstack/react-query": "^5.90.19",
     "@types/react": "~19.1.0",
     "@types/react-dom": "^19.2.3",
