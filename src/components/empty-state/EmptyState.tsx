@@ -6,6 +6,7 @@
  */
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
+import { colors as designColors } from '@sudobility/design';
 import { createThemedStyles } from '../../utils/styles';
 
 export interface EmptyStateProps {
@@ -50,7 +51,7 @@ const useStyles = createThemedStyles(colors => ({
     marginBottom: 16,
   },
   button: {
-    backgroundColor: '#2563eb',
+    backgroundColor: designColors.raw.blue[600],
     borderRadius: 6,
     minHeight: 44,
     paddingHorizontal: 24,
@@ -59,7 +60,7 @@ const useStyles = createThemedStyles(colors => ({
     justifyContent: 'center',
   },
   buttonText: {
-    color: '#ffffff',
+    color: designColors.raw.neutral[0],
     fontSize: 14,
     fontWeight: '500',
   },

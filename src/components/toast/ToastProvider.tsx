@@ -31,6 +31,7 @@ import React, {
 } from 'react';
 import { View, Text, Animated, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { colors as designColors } from '@sudobility/design';
 import { useTheme } from '../../theme/ThemeContext';
 import { createThemedStyles } from '../../utils/styles';
 
@@ -201,7 +202,7 @@ const useToastStyles = createThemedStyles(_colors => ({
     justifyContent: 'center' as const,
   },
   toastText: {
-    color: '#ffffff',
+    color: designColors.raw.neutral[0],
     fontSize: 15,
     fontWeight: '500' as const,
   },

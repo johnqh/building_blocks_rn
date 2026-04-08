@@ -15,6 +15,7 @@
  */
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { colors } from '@sudobility/design';
 
 export interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -100,29 +101,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 24,
-    backgroundColor: '#f9fafb',
+    backgroundColor: colors.raw.neutral[50],
   },
   title: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#111827',
+    color: colors.raw.neutral[900],
     marginBottom: 8,
   },
   message: {
     fontSize: 16,
-    color: '#4b5563',
+    color: colors.raw.neutral[600],
     textAlign: 'center',
     marginBottom: 12,
   },
   errorDetail: {
     fontSize: 13,
-    color: '#9ca3af',
+    color: colors.raw.neutral[400],
     textAlign: 'center',
     marginBottom: 24,
     paddingHorizontal: 16,
   },
   retryButton: {
-    backgroundColor: '#2563eb',
+    backgroundColor: colors.raw.blue[600],
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 24,
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   retryButtonText: {
-    color: '#ffffff',
+    color: colors.raw.neutral[0],
     fontSize: 16,
     fontWeight: '600',
   },

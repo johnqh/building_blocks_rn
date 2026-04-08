@@ -23,6 +23,7 @@ import {
   Platform,
 } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
+import { colors as designColors } from '@sudobility/design';
 import { createThemedStyles } from '../../utils/styles';
 
 export interface LoginScreenProps {
@@ -182,7 +183,10 @@ export function LoginScreen({
             accessibilityState={{ disabled: loading, busy: loading }}
           >
             {loading ? (
-              <ActivityIndicator color='#ffffff' size='small' />
+              <ActivityIndicator
+                color={designColors.raw.neutral[0]}
+                size='small'
+              />
             ) : (
               <Text style={styles.submitButtonText}>
                 {isSignUp ? 'Sign Up' : 'Sign In'}
@@ -332,7 +336,7 @@ const useStyles = createThemedStyles(colors => ({
     opacity: 0.6,
   },
   submitButtonText: {
-    color: '#ffffff',
+    color: designColors.raw.neutral[0],
     fontSize: 16,
     fontWeight: '600',
   },
