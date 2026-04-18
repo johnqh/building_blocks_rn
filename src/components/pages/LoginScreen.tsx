@@ -203,35 +203,54 @@ export function LoginScreen({
               <View style={styles.dividerLine} />
             </View>
 
-            {showGoogleSignIn && onGoogleSignIn && (
-              <Pressable
-                style={styles.socialButton}
-                onPress={() => handleSocialSignIn(onGoogleSignIn)}
-                disabled={loading}
-                accessibilityRole='button'
-                accessibilityLabel='Continue with Google'
-                accessibilityState={{ disabled: loading }}
-              >
-                <Text style={styles.socialButtonText}>
-                  Continue with Google
-                </Text>
-              </Pressable>
-            )}
+            {(() => {
+              const appleFirst =
+                Platform.OS === 'ios' || Platform.OS === 'macos';
 
-            {showAppleSignIn && onAppleSignIn && (
-              <Pressable
-                style={[styles.socialButton, styles.appleButton]}
-                onPress={() => handleSocialSignIn(onAppleSignIn)}
-                disabled={loading}
-                accessibilityRole='button'
-                accessibilityLabel='Continue with Apple'
-                accessibilityState={{ disabled: loading }}
-              >
-                <Text style={[styles.socialButtonText, styles.appleButtonText]}>
-                  Continue with Apple
-                </Text>
-              </Pressable>
-            )}
+              const googleButton = showGoogleSignIn && onGoogleSignIn && (
+                <Pressable
+                  style={styles.socialButton}
+                  onPress={() => handleSocialSignIn(onGoogleSignIn)}
+                  disabled={loading}
+                  accessibilityRole='button'
+                  accessibilityLabel='Continue with Google'
+                  accessibilityState={{ disabled: loading }}
+                >
+                  <Text style={styles.socialButtonText}>
+                    Continue with Google
+                  </Text>
+                </Pressable>
+              );
+
+              const appleButton = showAppleSignIn && onAppleSignIn && (
+                <Pressable
+                  style={[styles.socialButton, styles.appleButton]}
+                  onPress={() => handleSocialSignIn(onAppleSignIn)}
+                  disabled={loading}
+                  accessibilityRole='button'
+                  accessibilityLabel='Continue with Apple'
+                  accessibilityState={{ disabled: loading }}
+                >
+                  <Text
+                    style={[styles.socialButtonText, styles.appleButtonText]}
+                  >
+                    Continue with Apple
+                  </Text>
+                </Pressable>
+              );
+
+              return appleFirst ? (
+                <>
+                  {appleButton}
+                  {googleButton}
+                </>
+              ) : (
+                <>
+                  {googleButton}
+                  {appleButton}
+                </>
+              );
+            })()}
           </View>
         )}
 
