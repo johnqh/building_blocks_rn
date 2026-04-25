@@ -10,8 +10,15 @@ import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
 import type { TextPageContent, TextSection } from '../../types';
+import { StyleSheet } from 'react-native';
 import { createThemedStyles } from '../../utils/styles';
 import { useIsRTL } from '../../hooks/useRTL';
+
+const rtlStyles = StyleSheet.create({
+  text: {
+    writingDirection: 'rtl',
+  },
+});
 
 export interface AppTextScreenProps {
   /** Structured text content (same data type as web) */
@@ -39,14 +46,14 @@ function TextSectionView({
       <Text
         style={[
           level === 2 ? styles.sectionTitle : styles.subsectionTitle,
-          isRTL && styles.rtlText,
+          isRTL && rtlStyles.text,
         ]}
       >
         {section.title}
       </Text>
 
       {section.content && (
-        <Text style={[styles.sectionContent, isRTL && styles.rtlText]}>
+        <Text style={[styles.sectionContent, isRTL && rtlStyles.text]}>
           {section.content}
         </Text>
       )}
@@ -56,7 +63,7 @@ function TextSectionView({
           {section.items.map((item, index) => (
             <View key={index} style={styles.listItem}>
               <Text style={styles.bullet}>{'\u2022'}</Text>
-              <Text style={[styles.listItemText, isRTL && styles.rtlText]}>
+              <Text style={[styles.listItemText, isRTL && rtlStyles.text]}>
                 {item}
               </Text>
             </View>
@@ -88,10 +95,10 @@ export function AppTextScreen({
 
   const content = (
     <View style={[styles.container, style]}>
-      <Text style={[styles.title, isRTL && styles.rtlText]}>{text.title}</Text>
+      <Text style={[styles.title, isRTL && rtlStyles.text]}>{text.title}</Text>
 
       {lastUpdated && (
-        <Text style={[styles.lastUpdated, isRTL && styles.rtlText]}>
+        <Text style={[styles.lastUpdated, isRTL && rtlStyles.text]}>
           {lastUpdated}
         </Text>
       )}
@@ -102,17 +109,17 @@ export function AppTextScreen({
 
       {text.contact && (
         <View style={styles.contactSection}>
-          <Text style={[styles.sectionTitle, isRTL && styles.rtlText]}>
+          <Text style={[styles.sectionTitle, isRTL && rtlStyles.text]}>
             {text.contact.title}
           </Text>
-          <Text style={[styles.sectionContent, isRTL && styles.rtlText]}>
+          <Text style={[styles.sectionContent, isRTL && rtlStyles.text]}>
             {text.contact.description}
           </Text>
-          <Text style={[styles.contactInfo, isRTL && styles.rtlText]}>
+          <Text style={[styles.contactInfo, isRTL && rtlStyles.text]}>
             {text.contact.info}
           </Text>
           {text.contact.gdprNotice && (
-            <Text style={[styles.gdprNotice, isRTL && styles.rtlText]}>
+            <Text style={[styles.gdprNotice, isRTL && rtlStyles.text]}>
               {text.contact.gdprNotice}
             </Text>
           )}
@@ -206,8 +213,5 @@ const useStyles = createThemedStyles(colors => ({
     color: colors.textMuted,
     marginTop: 12,
     fontStyle: 'italic',
-  },
-  rtlText: {
-    writingDirection: 'rtl',
   },
 }));
