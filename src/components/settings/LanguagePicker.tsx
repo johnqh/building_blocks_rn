@@ -23,9 +23,9 @@ import {
 } from 'react-native';
 import type { StyleProp, ViewStyle, TextStyle } from 'react-native';
 
-const rtlText: TextStyle | undefined = I18nManager.isRTL
-  ? { writingDirection: 'rtl' }
-  : undefined;
+function useRTLText(): TextStyle | undefined {
+  return I18nManager.isRTL ? { writingDirection: 'rtl' } : undefined;
+}
 import type { LanguageConfig } from '../../constants/languages';
 import { DEFAULT_LANGUAGES } from '../../constants/languages';
 import { createThemedStyles } from '../../utils/styles';
@@ -51,6 +51,7 @@ export function LanguagePicker({
   style,
 }: LanguagePickerProps) {
   const styles = useStyles();
+  const rtlText = useRTLText();
   const [modalVisible, setModalVisible] = useState(false);
 
   const currentLang = languages.find(l => l.code === currentLanguage);

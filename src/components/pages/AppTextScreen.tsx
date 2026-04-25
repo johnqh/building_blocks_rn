@@ -12,9 +12,9 @@ import type { StyleProp, ViewStyle, TextStyle } from 'react-native';
 import type { TextPageContent, TextSection } from '../../types';
 import { createThemedStyles } from '../../utils/styles';
 
-const rtlText: TextStyle | undefined = I18nManager.isRTL
-  ? { writingDirection: 'rtl' }
-  : undefined;
+function useRTLText(): TextStyle | undefined {
+  return I18nManager.isRTL ? { writingDirection: 'rtl' } : undefined;
+}
 
 export interface AppTextScreenProps {
   /** Structured text content (same data type as web) */
@@ -35,6 +35,7 @@ function TextSectionView({
   level?: number;
 }) {
   const styles = useStyles();
+  const rtlText = useRTLText();
 
   return (
     <View style={styles.section}>
@@ -76,6 +77,7 @@ export function AppTextScreen({
   style,
 }: AppTextScreenProps) {
   const styles = useStyles();
+  const rtlText = useRTLText();
 
   const lastUpdated = text.lastUpdated
     ? text.lastUpdated.replace('{{date}}', lastUpdatedDate ?? '')

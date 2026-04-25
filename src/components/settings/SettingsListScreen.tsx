@@ -15,9 +15,9 @@ import type {
 } from '../../types';
 import { createThemedStyles } from '../../utils/styles';
 
-const rtlText: TextStyle | undefined = I18nManager.isRTL
-  ? { writingDirection: 'rtl' }
-  : undefined;
+function useRTLText(): TextStyle | undefined {
+  return I18nManager.isRTL ? { writingDirection: 'rtl' } : undefined;
+}
 
 export interface SettingsListScreenProps {
   /** Settings sections to display */
@@ -40,6 +40,7 @@ export function SettingsListScreen({
   onTrack,
 }: SettingsListScreenProps) {
   const styles = useStyles();
+  const rtlText = useRTLText();
 
   const handlePress = (section: SettingsSectionConfig) => {
     onTrack?.({
