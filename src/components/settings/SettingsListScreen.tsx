@@ -7,17 +7,13 @@
  * callback. Analytics tracking is supported via the `onTrack` prop.
  */
 import React from 'react';
-import { View, Text, Pressable, ScrollView, I18nManager } from 'react-native';
-import type { StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 import type {
   SettingsSectionConfig,
   AnalyticsTrackingParams,
 } from '../../types';
 import { createThemedStyles } from '../../utils/styles';
-
-function useRTLText(): TextStyle | undefined {
-  return I18nManager.isRTL ? { writingDirection: 'rtl' } : undefined;
-}
 
 export interface SettingsListScreenProps {
   /** Settings sections to display */
@@ -40,7 +36,6 @@ export function SettingsListScreen({
   onTrack,
 }: SettingsListScreenProps) {
   const styles = useStyles();
-  const rtlText = useRTLText();
 
   const handlePress = (section: SettingsSectionConfig) => {
     onTrack?.({
@@ -57,7 +52,7 @@ export function SettingsListScreen({
       style={[styles.container, style]}
       contentContainerStyle={styles.content}
     >
-      <Text style={[styles.title, rtlText]} accessibilityRole='header'>
+      <Text style={styles.title} accessibilityRole='header'>
         {title}
       </Text>
 
@@ -82,11 +77,9 @@ export function SettingsListScreen({
                 </View>
               )}
               <View style={styles.sectionInfo}>
-                <Text style={[styles.sectionLabel, rtlText]}>
-                  {section.label}
-                </Text>
+                <Text style={styles.sectionLabel}>{section.label}</Text>
                 {section.description && (
-                  <Text style={[styles.sectionDescription, rtlText]}>
+                  <Text style={styles.sectionDescription}>
                     {section.description}
                   </Text>
                 )}
@@ -113,6 +106,7 @@ const useStyles = createThemedStyles(colors => ({
     fontWeight: '700',
     color: colors.text,
     marginBottom: 20,
+    textAlign: 'auto',
   },
   sectionList: {
     backgroundColor: colors.card,
@@ -149,11 +143,13 @@ const useStyles = createThemedStyles(colors => ({
     fontSize: 16,
     fontWeight: '500',
     color: colors.text,
+    textAlign: 'auto',
   },
   sectionDescription: {
     fontSize: 13,
     color: colors.textMuted,
     marginTop: 2,
+    textAlign: 'auto',
   },
   chevron: {
     fontSize: 22,
