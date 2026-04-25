@@ -120,26 +120,22 @@ const useStyles = createThemedStyles(colors => ({
     fontWeight: '700',
     color: colors.text,
     marginBottom: 8,
-    alignSelf: 'flex-start',
     textAlign: 'auto',
   },
   lastUpdated: {
     fontSize: 14,
     color: colors.textMuted,
     marginBottom: 24,
-    alignSelf: 'flex-start',
     textAlign: 'auto',
   },
   section: {
     marginBottom: 24,
-    alignItems: 'flex-start',
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: '600',
     color: colors.text,
     marginBottom: 8,
-    alignSelf: 'flex-start',
     textAlign: 'auto',
   },
   subsectionTitle: {
@@ -147,25 +143,21 @@ const useStyles = createThemedStyles(colors => ({
     fontWeight: '600',
     color: colors.text,
     marginBottom: 6,
-    alignSelf: 'flex-start',
     textAlign: 'auto',
   },
   sectionContent: {
     fontSize: 15,
     lineHeight: 22,
     color: colors.textSecondary,
-    alignSelf: 'flex-start',
     textAlign: 'auto',
   },
   list: {
     marginTop: 8,
     gap: 6,
-    alignSelf: 'stretch',
   },
   listItem: {
     flexDirection: 'row',
     paddingStart: 8,
-    alignSelf: 'flex-start',
   },
   bullet: {
     fontSize: 15,
@@ -185,13 +177,11 @@ const useStyles = createThemedStyles(colors => ({
     padding: 16,
     backgroundColor: colors.surfaceSecondary,
     borderRadius: 12,
-    alignItems: 'flex-start',
   },
   contactInfo: {
     fontSize: 15,
     color: colors.primary,
     marginTop: 8,
-    alignSelf: 'flex-start',
     textAlign: 'auto',
   },
   gdprNotice: {
@@ -199,7 +189,6 @@ const useStyles = createThemedStyles(colors => ({
     color: colors.textMuted,
     marginTop: 12,
     fontStyle: 'italic',
-    alignSelf: 'flex-start',
     textAlign: 'auto',
   },
 }));
