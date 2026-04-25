@@ -128,6 +128,7 @@ const useStyles = createThemedStyles(colors => ({
   },
   section: {
     marginBottom: 24,
+    alignItems: 'flex-start',
   },
   sectionTitle: {
     fontSize: 20,
@@ -171,6 +172,7 @@ const useStyles = createThemedStyles(colors => ({
     padding: 16,
     backgroundColor: colors.surfaceSecondary,
     borderRadius: 12,
+    alignItems: 'flex-start',
   },
   contactInfo: {
     fontSize: 15,
