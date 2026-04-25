@@ -21,6 +21,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
+import { useRTLTextStyle } from '../../hooks/useRTL';
 import type { LanguageConfig } from '../../constants/languages';
 import { DEFAULT_LANGUAGES } from '../../constants/languages';
 import { createThemedStyles } from '../../utils/styles';
@@ -46,6 +47,7 @@ export function LanguagePicker({
   style,
 }: LanguagePickerProps) {
   const styles = useStyles();
+  const rtlText = useRTLTextStyle();
   const [modalVisible, setModalVisible] = useState(false);
 
   const currentLang = languages.find(l => l.code === currentLanguage);
@@ -57,7 +59,7 @@ export function LanguagePicker({
 
   return (
     <View style={style}>
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label && <Text style={[styles.label, rtlText]}>{label}</Text>}
 
       <Pressable
         style={styles.trigger}
@@ -65,7 +67,7 @@ export function LanguagePicker({
         accessibilityRole='button'
         accessibilityLabel={`${label ?? 'Language'}: ${currentLang?.name ?? currentLanguage}. Tap to change.`}
       >
-        <Text style={styles.triggerText}>
+        <Text style={[styles.triggerText, rtlText]}>
           {currentLang
             ? `${currentLang.flag} ${currentLang.name}`
             : currentLanguage}
@@ -81,7 +83,10 @@ export function LanguagePicker({
       >
         <SafeAreaView style={styles.modal}>
           <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle} accessibilityRole='header'>
+            <Text
+              style={[styles.modalTitle, rtlText]}
+              accessibilityRole='header'
+            >
               {label ?? 'Select Language'}
             </Text>
             <Pressable
@@ -110,7 +115,7 @@ export function LanguagePicker({
                 accessibilityLabel={`${item.name}${item.code === currentLanguage ? ', selected' : ''}`}
               >
                 <Text style={styles.flag}>{item.flag}</Text>
-                <Text style={styles.languageName}>{item.name}</Text>
+                <Text style={[styles.languageName, rtlText]}>{item.name}</Text>
                 {item.code === currentLanguage && (
                   <Text style={styles.checkmark}>{'\u2713'}</Text>
                 )}
@@ -130,7 +135,6 @@ const useStyles = createThemedStyles(colors => ({
     fontWeight: '500',
     color: colors.textSecondary,
     marginBottom: 8,
-    textAlign: 'auto',
   },
   trigger: {
     flexDirection: 'row',
@@ -147,7 +151,6 @@ const useStyles = createThemedStyles(colors => ({
   triggerText: {
     fontSize: 16,
     color: colors.text,
-    textAlign: 'auto',
   },
   chevron: {
     fontSize: 10,
@@ -194,7 +197,6 @@ const useStyles = createThemedStyles(colors => ({
     fontSize: 16,
     color: colors.text,
     flex: 1,
-    textAlign: 'auto',
   },
   checkmark: {
     fontSize: 18,

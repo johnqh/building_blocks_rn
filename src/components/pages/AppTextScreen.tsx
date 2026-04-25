@@ -11,6 +11,7 @@ import { View, Text, ScrollView } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
 import type { TextPageContent, TextSection } from '../../types';
 import { createThemedStyles } from '../../utils/styles';
+import { useRTLTextStyle } from '../../hooks/useRTL';
 
 export interface AppTextScreenProps {
   /** Structured text content (same data type as web) */
@@ -31,15 +32,21 @@ function TextSectionView({
   level?: number;
 }) {
   const styles = useStyles();
+  const rtlText = useRTLTextStyle();
 
   return (
     <View style={styles.section}>
-      <Text style={level === 2 ? styles.sectionTitle : styles.subsectionTitle}>
+      <Text
+        style={[
+          level === 2 ? styles.sectionTitle : styles.subsectionTitle,
+          rtlText,
+        ]}
+      >
         {section.title}
       </Text>
 
       {section.content && (
-        <Text style={styles.sectionContent}>{section.content}</Text>
+        <Text style={[styles.sectionContent, rtlText]}>{section.content}</Text>
       )}
 
       {section.items && section.items.length > 0 && (
@@ -47,7 +54,7 @@ function TextSectionView({
           {section.items.map((item, index) => (
             <View key={index} style={styles.listItem}>
               <Text style={styles.bullet}>{'\u2022'}</Text>
-              <Text style={styles.listItemText}>{item}</Text>
+              <Text style={[styles.listItemText, rtlText]}>{item}</Text>
             </View>
           ))}
         </View>
@@ -67,6 +74,7 @@ export function AppTextScreen({
   style,
 }: AppTextScreenProps) {
   const styles = useStyles();
+  const rtlText = useRTLTextStyle();
 
   const lastUpdated = text.lastUpdated
     ? text.lastUpdated.replace('{{date}}', lastUpdatedDate ?? '')
@@ -76,9 +84,11 @@ export function AppTextScreen({
 
   const content = (
     <View style={[styles.container, style]}>
-      <Text style={styles.title}>{text.title}</Text>
+      <Text style={[styles.title, rtlText]}>{text.title}</Text>
 
-      {lastUpdated && <Text style={styles.lastUpdated}>{lastUpdated}</Text>}
+      {lastUpdated && (
+        <Text style={[styles.lastUpdated, rtlText]}>{lastUpdated}</Text>
+      )}
 
       {text.sections.map((section, index) => (
         <TextSectionView key={index} section={section} />
@@ -86,11 +96,17 @@ export function AppTextScreen({
 
       {text.contact && (
         <View style={styles.contactSection}>
-          <Text style={styles.sectionTitle}>{text.contact.title}</Text>
-          <Text style={styles.sectionContent}>{text.contact.description}</Text>
-          <Text style={styles.contactInfo}>{text.contact.info}</Text>
+          <Text style={[styles.sectionTitle, rtlText]}>
+            {text.contact.title}
+          </Text>
+          <Text style={[styles.sectionContent, rtlText]}>
+            {text.contact.description}
+          </Text>
+          <Text style={[styles.contactInfo, rtlText]}>{text.contact.info}</Text>
           {text.contact.gdprNotice && (
-            <Text style={styles.gdprNotice}>{text.contact.gdprNotice}</Text>
+            <Text style={[styles.gdprNotice, rtlText]}>
+              {text.contact.gdprNotice}
+            </Text>
           )}
         </View>
       )}
@@ -120,13 +136,11 @@ const useStyles = createThemedStyles(colors => ({
     fontWeight: '700',
     color: colors.text,
     marginBottom: 8,
-    textAlign: 'auto',
   },
   lastUpdated: {
     fontSize: 14,
     color: colors.textMuted,
     marginBottom: 24,
-    textAlign: 'auto',
   },
   section: {
     marginBottom: 24,
@@ -136,20 +150,17 @@ const useStyles = createThemedStyles(colors => ({
     fontWeight: '600',
     color: colors.text,
     marginBottom: 8,
-    textAlign: 'auto',
   },
   subsectionTitle: {
     fontSize: 17,
     fontWeight: '600',
     color: colors.text,
     marginBottom: 6,
-    textAlign: 'auto',
   },
   sectionContent: {
     fontSize: 15,
     lineHeight: 22,
     color: colors.textSecondary,
-    textAlign: 'auto',
   },
   list: {
     marginTop: 8,
@@ -170,7 +181,6 @@ const useStyles = createThemedStyles(colors => ({
     lineHeight: 22,
     color: colors.textSecondary,
     flex: 1,
-    textAlign: 'auto',
   },
   contactSection: {
     marginTop: 16,
@@ -182,13 +192,11 @@ const useStyles = createThemedStyles(colors => ({
     fontSize: 15,
     color: colors.primary,
     marginTop: 8,
-    textAlign: 'auto',
   },
   gdprNotice: {
     fontSize: 13,
     color: colors.textMuted,
     marginTop: 12,
     fontStyle: 'italic',
-    textAlign: 'auto',
   },
 }));
