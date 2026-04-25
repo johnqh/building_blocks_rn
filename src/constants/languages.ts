@@ -61,5 +61,6 @@ export const RTL_LANGUAGES = ['ar'];
  * Check if a language code is RTL.
  */
 export function isRTL(languageCode: string): boolean {
-  return RTL_LANGUAGES.includes(languageCode);
+  const baseCode = languageCode.toLowerCase().replace('_', '-').split('-')[0];
+  return RTL_LANGUAGES.includes(baseCode);
 }
