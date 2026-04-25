@@ -120,11 +120,13 @@ const useStyles = createThemedStyles(colors => ({
     fontWeight: '700',
     color: colors.text,
     marginBottom: 8,
+    alignSelf: 'flex-start',
   },
   lastUpdated: {
     fontSize: 14,
     color: colors.textMuted,
     marginBottom: 24,
+    alignSelf: 'flex-start',
   },
   section: {
     marginBottom: 24,
@@ -135,25 +137,30 @@ const useStyles = createThemedStyles(colors => ({
     fontWeight: '600',
     color: colors.text,
     marginBottom: 8,
+    alignSelf: 'flex-start',
   },
   subsectionTitle: {
     fontSize: 17,
     fontWeight: '600',
     color: colors.text,
     marginBottom: 6,
+    alignSelf: 'flex-start',
   },
   sectionContent: {
     fontSize: 15,
     lineHeight: 22,
     color: colors.textSecondary,
+    alignSelf: 'flex-start',
   },
   list: {
     marginTop: 8,
     gap: 6,
+    alignSelf: 'stretch',
   },
   listItem: {
     flexDirection: 'row',
     paddingStart: 8,
+    alignSelf: 'flex-start',
   },
   bullet: {
     fontSize: 15,
@@ -178,11 +185,13 @@ const useStyles = createThemedStyles(colors => ({
     fontSize: 15,
     color: colors.primary,
     marginTop: 8,
+    alignSelf: 'flex-start',
   },
   gdprNotice: {
     fontSize: 13,
     color: colors.textMuted,
     marginTop: 12,
     fontStyle: 'italic',
+    alignSelf: 'flex-start',
   },
 }));
