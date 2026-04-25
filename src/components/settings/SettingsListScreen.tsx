@@ -7,13 +7,17 @@
  * callback. Analytics tracking is supported via the `onTrack` prop.
  */
 import React from 'react';
-import { View, Text, Pressable, ScrollView } from 'react-native';
-import type { StyleProp, ViewStyle } from 'react-native';
+import { View, Text, Pressable, ScrollView, I18nManager } from 'react-native';
+import type { StyleProp, ViewStyle, TextStyle } from 'react-native';
 import type {
   SettingsSectionConfig,
   AnalyticsTrackingParams,
 } from '../../types';
 import { createThemedStyles } from '../../utils/styles';
+
+const rtlText: TextStyle | undefined = I18nManager.isRTL
+  ? { writingDirection: 'rtl' }
+  : undefined;
 
 export interface SettingsListScreenProps {
   /** Settings sections to display */
@@ -52,7 +56,7 @@ export function SettingsListScreen({
       style={[styles.container, style]}
       contentContainerStyle={styles.content}
     >
-      <Text style={styles.title} accessibilityRole='header'>
+      <Text style={[styles.title, rtlText]} accessibilityRole='header'>
         {title}
       </Text>
 
@@ -77,9 +81,11 @@ export function SettingsListScreen({
                 </View>
               )}
               <View style={styles.sectionInfo}>
-                <Text style={styles.sectionLabel}>{section.label}</Text>
+                <Text style={[styles.sectionLabel, rtlText]}>
+                  {section.label}
+                </Text>
                 {section.description && (
-                  <Text style={styles.sectionDescription}>
+                  <Text style={[styles.sectionDescription, rtlText]}>
                     {section.description}
                   </Text>
                 )}
@@ -136,6 +142,7 @@ const useStyles = createThemedStyles(colors => ({
   },
   sectionInfo: {
     flex: 1,
+    alignItems: 'flex-start',
   },
   sectionLabel: {
     fontSize: 16,

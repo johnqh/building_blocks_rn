@@ -7,10 +7,14 @@
  * prop for custom layout wrapping.
  */
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import type { StyleProp, ViewStyle } from 'react-native';
+import { View, Text, ScrollView, I18nManager } from 'react-native';
+import type { StyleProp, ViewStyle, TextStyle } from 'react-native';
 import type { TextPageContent, TextSection } from '../../types';
 import { createThemedStyles } from '../../utils/styles';
+
+const rtlText: TextStyle | undefined = I18nManager.isRTL
+  ? { writingDirection: 'rtl' }
+  : undefined;
 
 export interface AppTextScreenProps {
   /** Structured text content (same data type as web) */
@@ -34,12 +38,17 @@ function TextSectionView({
 
   return (
     <View style={styles.section}>
-      <Text style={level === 2 ? styles.sectionTitle : styles.subsectionTitle}>
+      <Text
+        style={[
+          level === 2 ? styles.sectionTitle : styles.subsectionTitle,
+          rtlText,
+        ]}
+      >
         {section.title}
       </Text>
 
       {section.content && (
-        <Text style={styles.sectionContent}>{section.content}</Text>
+        <Text style={[styles.sectionContent, rtlText]}>{section.content}</Text>
       )}
 
       {section.items && section.items.length > 0 && (
@@ -47,7 +56,7 @@ function TextSectionView({
           {section.items.map((item, index) => (
             <View key={index} style={styles.listItem}>
               <Text style={styles.bullet}>{'\u2022'}</Text>
-              <Text style={styles.listItemText}>{item}</Text>
+              <Text style={[styles.listItemText, rtlText]}>{item}</Text>
             </View>
           ))}
         </View>
@@ -76,9 +85,11 @@ export function AppTextScreen({
 
   const content = (
     <View style={[styles.container, style]}>
-      <Text style={styles.title}>{text.title}</Text>
+      <Text style={[styles.title, rtlText]}>{text.title}</Text>
 
-      {lastUpdated && <Text style={styles.lastUpdated}>{lastUpdated}</Text>}
+      {lastUpdated && (
+        <Text style={[styles.lastUpdated, rtlText]}>{lastUpdated}</Text>
+      )}
 
       {text.sections.map((section, index) => (
         <TextSectionView key={index} section={section} />
@@ -86,11 +97,17 @@ export function AppTextScreen({
 
       {text.contact && (
         <View style={styles.contactSection}>
-          <Text style={styles.sectionTitle}>{text.contact.title}</Text>
-          <Text style={styles.sectionContent}>{text.contact.description}</Text>
-          <Text style={styles.contactInfo}>{text.contact.info}</Text>
+          <Text style={[styles.sectionTitle, rtlText]}>
+            {text.contact.title}
+          </Text>
+          <Text style={[styles.sectionContent, rtlText]}>
+            {text.contact.description}
+          </Text>
+          <Text style={[styles.contactInfo, rtlText]}>{text.contact.info}</Text>
           {text.contact.gdprNotice && (
-            <Text style={styles.gdprNotice}>{text.contact.gdprNotice}</Text>
+            <Text style={[styles.gdprNotice, rtlText]}>
+              {text.contact.gdprNotice}
+            </Text>
           )}
         </View>
       )}

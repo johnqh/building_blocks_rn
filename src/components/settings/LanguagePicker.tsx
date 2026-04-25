@@ -19,8 +19,13 @@ import {
   Modal,
   FlatList,
   SafeAreaView,
+  I18nManager,
 } from 'react-native';
-import type { StyleProp, ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle, TextStyle } from 'react-native';
+
+const rtlText: TextStyle | undefined = I18nManager.isRTL
+  ? { writingDirection: 'rtl' }
+  : undefined;
 import type { LanguageConfig } from '../../constants/languages';
 import { DEFAULT_LANGUAGES } from '../../constants/languages';
 import { createThemedStyles } from '../../utils/styles';
@@ -57,7 +62,7 @@ export function LanguagePicker({
 
   return (
     <View style={style}>
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label && <Text style={[styles.label, rtlText]}>{label}</Text>}
 
       <Pressable
         style={styles.trigger}
@@ -65,7 +70,7 @@ export function LanguagePicker({
         accessibilityRole='button'
         accessibilityLabel={`${label ?? 'Language'}: ${currentLang?.name ?? currentLanguage}. Tap to change.`}
       >
-        <Text style={styles.triggerText}>
+        <Text style={[styles.triggerText, rtlText]}>
           {currentLang
             ? `${currentLang.flag} ${currentLang.name}`
             : currentLanguage}
@@ -81,7 +86,10 @@ export function LanguagePicker({
       >
         <SafeAreaView style={styles.modal}>
           <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle} accessibilityRole='header'>
+            <Text
+              style={[styles.modalTitle, rtlText]}
+              accessibilityRole='header'
+            >
               {label ?? 'Select Language'}
             </Text>
             <Pressable
@@ -110,7 +118,7 @@ export function LanguagePicker({
                 accessibilityLabel={`${item.name}${item.code === currentLanguage ? ', selected' : ''}`}
               >
                 <Text style={styles.flag}>{item.flag}</Text>
-                <Text style={styles.languageName}>{item.name}</Text>
+                <Text style={[styles.languageName, rtlText]}>{item.name}</Text>
                 {item.code === currentLanguage && (
                   <Text style={styles.checkmark}>{'\u2713'}</Text>
                 )}
