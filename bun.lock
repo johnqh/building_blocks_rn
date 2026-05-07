@@ -9,7 +9,7 @@
         "@react-native-async-storage/async-storage": "2.2.0",
         "@react-navigation/native": "^7.1.28",
         "@react-navigation/native-stack": "^7.10.1",
-        "@sudobility/types": "^1.9.61",
+        "@sudobility/types": "^1.9.62",
         "@tanstack/react-query": "^5.90.19",
         "@types/react": "~19.1.0",
         "@types/react-dom": "^19.2.3",
@@ -337,7 +337,7 @@
 
     "@sudobility/design": ["@sudobility/design@1.1.25", "", { "peerDependencies": { "clsx": ">=2.0.0", "tailwind-merge": ">=2.0.0" } }, "sha512-D3r8KxwYTyzoxwK9Ud8CqtcW51s7PdgJ19MvDDNpSnIUSkF9rusJ6DOqEyqGTZyslI6asFid5pJXy6/XrIGbAg=="],
 
-    "@sudobility/types": ["@sudobility/types@1.9.61", "", {}, "sha512-SODGpstB/iKfK3H/4BvJx/FBcc1h3gutUjGotyxN19VnOfWyzaDoEmW7eyoxOAYhZyXMXagSiii+NIEZvuxKog=="],
+    "@sudobility/types": ["@sudobility/types@1.9.62", "", {}, "sha512-GOkz5oE7Fmlolba2aemBF2fKPtH4I2lHAjVta+fqZAoAV72DQaWYzVEjTwKZs/ACY/g9Z262IDa7lEh+IOrn7w=="],
 
     "@tanstack/query-core": ["@tanstack/query-core@5.90.20", "", {}, "sha512-OMD2HLpNouXEfZJWcKeVKUgQ5n+n3A2JFmBaScpNDUqSrQSjiveC7dKMe53uJUg1nDG16ttFPz2xfilz6i2uVg=="],
 
