@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '14.0'
 
   s.source_files = 'macos/**/*.{h,m,mm}'
-  s.frameworks   = 'AuthenticationServices', 'Security'
+  s.frameworks   = 'AuthenticationServices', 'Security', 'StoreKit'
 
   s.dependency 'React-Core'
 end

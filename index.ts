@@ -52,3 +52,11 @@ export {
   generateCodeVerifier as webAuthGenerateCodeVerifier,
   sha256Base64Url as webAuthSha256Base64Url,
 } from './src/native/WebAuth';
+
+// Review prompts
+export {
+  isInAppReviewAvailable,
+  requestInAppReview,
+  recordSuccessfulActionAndPromptForReview,
+} from './src/review';
+export type { ReviewPromptOptions, ReviewPromptResult } from './src/review';
