@@ -1,17 +1,22 @@
 {
   "name": "@sudobility/building_blocks_rn",
-  "version": "0.0.38",
+  "version": "0.0.39",
   "description": "Higher-level shared UI building blocks for Sudobility React Native apps",
   "type": "module",
   "main": "./dist/index.js",
+  "react-native": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "react-native": "./dist/index.js",
       "import": "./dist/index.js",
+      "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
     "./firebase": {
+      "react-native": "./dist/firebase.js",
       "import": "./dist/firebase.js",
+      "default": "./dist/firebase.js",
       "types": "./dist/firebase.d.ts"
     }
   },
