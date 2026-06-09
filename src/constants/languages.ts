@@ -1,10 +1,9 @@
 /**
  * @fileoverview Language configuration constants for React Native i18n.
  *
- * Defines the `LanguageConfig` type, a default set of 16 supported languages
- * with emoji flags, the `RTL_LANGUAGES` array (currently Arabic), and an
- * `isRTL()` helper function for checking if a language code uses
- * right-to-left text direction.
+ * Defines the `LanguageConfig` type, a default set of 15 supported languages
+ * with emoji flags, the `RTL_LANGUAGES` array, and an `isRTL()` helper
+ * function for checking if a language code uses right-to-left text direction.
  */
 
 export interface LanguageConfig {
@@ -14,16 +13,11 @@ export interface LanguageConfig {
 }
 
 /**
- * Default set of 16 supported languages with their flags.
+ * Default set of 15 supported languages with their flags.
  * Apps can override this list by passing their own languages prop.
  */
 export const DEFAULT_LANGUAGES: LanguageConfig[] = [
   { code: 'en', name: 'English', flag: '\u{1F1FA}\u{1F1F8}' },
-  {
-    code: 'ar',
-    name: '\u0627\u0644\u0639\u0631\u0628\u064A\u0629',
-    flag: '\u{1F1F8}\u{1F1E6}',
-  },
   { code: 'de', name: 'Deutsch', flag: '\u{1F1E9}\u{1F1EA}' },
   { code: 'es', name: 'Espa\u00F1ol', flag: '\u{1F1EA}\u{1F1F8}' },
   { code: 'fr', name: 'Fran\u00E7ais', flag: '\u{1F1EB}\u{1F1F7}' },
@@ -55,7 +49,7 @@ export const DEFAULT_LANGUAGES: LanguageConfig[] = [
 /**
  * Languages that use right-to-left text direction.
  */
-export const RTL_LANGUAGES = ['ar'];
+export const RTL_LANGUAGES: string[] = [];
 
 /**
  * Check if a language code is RTL.
