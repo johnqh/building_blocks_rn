@@ -1,6 +1,7 @@
 // Core components (no auth dependency)
 export * from './src/components/header';
 export * from './src/components/footer';
+export * from './src/components/bottom-action-bar';
 export * from './src/components/layout';
 export * from './src/components/settings';
 export * from './src/components/pages';
