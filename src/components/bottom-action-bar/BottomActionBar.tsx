@@ -20,14 +20,18 @@ export interface BottomActionBarProps {
   style?: StyleProp<ViewStyle>;
 }
 
+const SPACING = 16;
+
 export function BottomActionBar({ children, style }: BottomActionBarProps) {
   const styles = useStyles();
   const insets = useSafeAreaInsets();
   const tabBarHeight = useContext(BottomTabBarHeightContext);
-  // Under a tab bar, the tab bar already covers the home indicator, so the
-  // bar sits directly above it with a small constant. Otherwise (pushed/modal
-  // screens that cover the tab bar) honor the bottom safe-area inset.
-  const paddingBottom = tabBarHeight != null ? 12 : Math.max(insets.bottom, 12);
+  // Above a tab/tool bar: it already covers the home indicator, so just add
+  // spacing above it. Otherwise: sit above the bottom safe-area inset with
+  // spacing. (Inside a modal, reset BottomTabBarHeightContext so this takes
+  // the no-tab-bar branch — the tab bar isn't actually below the modal.)
+  const hasTabBar = (tabBarHeight ?? 0) > 0;
+  const paddingBottom = hasTabBar ? SPACING : insets.bottom + SPACING;
 
   return <View style={[styles.bar, { paddingBottom }, style]}>{children}</View>;
 }
