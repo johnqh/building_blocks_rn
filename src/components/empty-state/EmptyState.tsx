@@ -1,8 +1,9 @@
 /**
  * @fileoverview Empty state component for React Native.
  *
- * Displays a centered message with a primary action button. Useful for
- * screens or sections that have no data to show yet (e.g. empty lists).
+ * Displays a centered message with an optional primary action button. Useful
+ * for screens or sections that have no data to show yet (e.g. empty lists).
+ * Omit `buttonLabel`/`onPress` for a message-only placeholder.
  */
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
@@ -12,26 +13,31 @@ import { createThemedStyles } from '../../utils/styles';
 export interface EmptyStateProps {
   /** Descriptive message shown above the action button */
   message: string;
-  /** Label for the primary action button */
-  buttonLabel: string;
-  /** Callback fired when the action button is pressed */
-  onPress: () => void;
+  /** Label for the primary action button. Omit to render no button. */
+  buttonLabel?: string;
+  /** Callback fired when the action button is pressed. Omit to render no button. */
+  onPress?: () => void;
 }
 
 export function EmptyState({ message, buttonLabel, onPress }: EmptyStateProps) {
   const styles = useStyles();
+  const showButton = buttonLabel != null && onPress != null;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.message}>{message}</Text>
-      <Pressable
-        style={styles.button}
-        onPress={onPress}
-        accessibilityRole='button'
-        accessibilityLabel={buttonLabel}
-      >
-        <Text style={styles.buttonText}>{buttonLabel}</Text>
-      </Pressable>
+      <Text style={[styles.message, showButton && styles.messageWithButton]}>
+        {message}
+      </Text>
+      {showButton && (
+        <Pressable
+          style={styles.button}
+          onPress={onPress}
+          accessibilityRole='button'
+          accessibilityLabel={buttonLabel}
+        >
+          <Text style={styles.buttonText}>{buttonLabel}</Text>
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -48,6 +54,8 @@ const useStyles = createThemedStyles(colors => ({
     textAlign: 'center',
     lineHeight: 22,
     color: colors.textSecondary,
+  },
+  messageWithButton: {
     marginBottom: 16,
   },
   button: {
