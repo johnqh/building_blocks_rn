@@ -7,6 +7,8 @@
  * gray-800/900 surfaces with inverted text colors.
  */
 
+import { defaultTheme } from '@sudobility/design/themes';
+
 export const palette = {
   primary: {
     50: '#eff6ff',
@@ -63,46 +65,73 @@ export interface ThemeColors {
   invertedBackground: string;
 }
 
+/**
+ * Convert a design-system HSL token ("H S% L%") to a hex string. React Native's
+ * color parser cannot read space-separated `hsl()` (CSS Color 4) syntax, so the
+ * theme is resolved to hex at module load. `lOverride` produces tint variants
+ * (e.g. error/success backgrounds) from the same hue, keeping them theme-derived
+ * rather than hardcoded.
+ */
+function hslToHex(token: string, lOverride?: number): string {
+  const [h, s, l] = token.replace(/%/g, '').trim().split(/\s+/).map(Number);
+  const L = (lOverride ?? l) / 100;
+  const S = s / 100;
+  const a = S * Math.min(L, 1 - L);
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12;
+    const c = L - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+    return Math.round(255 * c)
+      .toString(16)
+      .padStart(2, '0');
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+// Theme colors are derived from @sudobility/design's default theme so the RN
+// library follows the design system instead of a local hardcoded palette.
+const L = defaultTheme.light;
+const D = defaultTheme.dark;
+
 export const lightColors: ThemeColors = {
-  primary: palette.primary[600],
-  background: palette.gray[50],
-  card: palette.white,
-  text: palette.gray[900],
-  textSecondary: palette.gray[600],
-  textMuted: palette.gray[400],
-  border: palette.gray[200],
-  notification: palette.error,
-  surface: palette.white,
-  surfaceSecondary: palette.gray[100],
-  error: palette.error,
-  errorBg: '#fef2f2',
-  success: palette.success,
-  successBg: '#dcfce7',
-  successText: '#16a34a',
-  warning: palette.warning,
-  info: palette.info,
-  invertedText: palette.white,
-  invertedBackground: palette.black,
+  primary: hslToHex(L.primary),
+  background: hslToHex(L.background),
+  card: hslToHex(L.card),
+  text: hslToHex(L.foreground),
+  textSecondary: hslToHex(L.mutedForeground),
+  textMuted: hslToHex(L.mutedForeground, 60),
+  border: hslToHex(L.border),
+  notification: hslToHex(L.destructive),
+  surface: hslToHex(L.card),
+  surfaceSecondary: hslToHex(L.muted),
+  error: hslToHex(L.destructive),
+  errorBg: hslToHex(L.destructive, 96),
+  success: hslToHex(L.success),
+  successBg: hslToHex(L.success, 92),
+  successText: hslToHex(L.success),
+  warning: hslToHex(L.warning),
+  info: hslToHex(L.info),
+  invertedText: hslToHex(D.foreground),
+  invertedBackground: hslToHex(D.background),
 };
 
 export const darkColors: ThemeColors = {
-  primary: palette.primary[400],
-  background: palette.gray[900],
-  card: palette.gray[800],
-  text: palette.gray[50],
-  textSecondary: palette.gray[400],
-  textMuted: palette.gray[500],
-  border: palette.gray[700],
-  notification: palette.error,
-  surface: palette.gray[800],
-  surfaceSecondary: palette.gray[700],
-  error: palette.error,
-  errorBg: '#451a1a',
-  success: palette.success,
-  successBg: '#052e16',
-  successText: '#86efac',
-  warning: palette.warning,
-  info: palette.info,
-  invertedText: palette.black,
-  invertedBackground: palette.white,
+  primary: hslToHex(D.primary),
+  background: hslToHex(D.background),
+  card: hslToHex(D.card),
+  text: hslToHex(D.foreground),
+  textSecondary: hslToHex(D.mutedForeground),
+  textMuted: hslToHex(D.mutedForeground, 50),
+  border: hslToHex(D.border),
+  notification: hslToHex(D.destructive),
+  surface: hslToHex(D.card),
+  surfaceSecondary: hslToHex(D.muted),
+  error: hslToHex(D.destructive),
+  errorBg: hslToHex(D.destructive, 14),
+  success: hslToHex(D.success),
+  successBg: hslToHex(D.success, 14),
+  successText: hslToHex(D.success, 70),
+  warning: hslToHex(D.warning),
+  info: hslToHex(D.info),
+  invertedText: hslToHex(L.foreground),
+  invertedBackground: hslToHex(L.background),
 };
