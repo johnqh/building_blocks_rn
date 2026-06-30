@@ -9,62 +9,6 @@
 
 import { defaultTheme } from '@sudobility/design/themes';
 
-export const palette = {
-  primary: {
-    50: '#eff6ff',
-    100: '#dbeafe',
-    200: '#bfdbfe',
-    300: '#93c5fd',
-    400: '#60a5fa',
-    500: '#3b82f6',
-    600: '#2563eb',
-    700: '#1d4ed8',
-    800: '#1e40af',
-    900: '#1e3a8a',
-  },
-  gray: {
-    50: '#f9fafb',
-    100: '#f3f4f6',
-    200: '#e5e7eb',
-    300: '#d1d5db',
-    400: '#9ca3af',
-    500: '#6b7280',
-    600: '#4b5563',
-    700: '#374151',
-    800: '#1f2937',
-    900: '#111827',
-  },
-  success: '#22c55e',
-  error: '#ef4444',
-  warning: '#f59e0b',
-  info: '#3b82f6',
-  white: '#ffffff',
-  black: '#000000',
-  transparent: 'transparent',
-} as const;
-
-export interface ThemeColors {
-  primary: string;
-  background: string;
-  card: string;
-  text: string;
-  textSecondary: string;
-  textMuted: string;
-  border: string;
-  notification: string;
-  surface: string;
-  surfaceSecondary: string;
-  error: string;
-  errorBg: string;
-  success: string;
-  successBg: string;
-  successText: string;
-  warning: string;
-  info: string;
-  invertedText: string;
-  invertedBackground: string;
-}
-
 /**
  * Convert a design-system HSL token ("H S% L%") to a hex string. React Native's
  * color parser cannot read space-separated `hsl()` (CSS Color 4) syntax, so the
@@ -91,6 +35,67 @@ function hslToHex(token: string, lOverride?: number): string {
 // library follows the design system instead of a local hardcoded palette.
 const L = defaultTheme.light;
 const D = defaultTheme.dark;
+
+export const palette = {
+  // Numeric primary/gray scales are a raw Tailwind reference ramp kept for
+  // fine-grained shades (hover tints, subtle borders). The design system
+  // exposes only single semantic tokens (no numeric scale), so these stay as a
+  // decorative reference scale; the live theme below derives from defaultTheme.
+  primary: {
+    50: '#eff6ff',
+    100: '#dbeafe',
+    200: '#bfdbfe',
+    300: '#93c5fd',
+    400: '#60a5fa',
+    500: '#3b82f6',
+    600: '#2563eb',
+    700: '#1d4ed8',
+    800: '#1e40af',
+    900: '#1e3a8a',
+  },
+  gray: {
+    50: '#f9fafb',
+    100: '#f3f4f6',
+    200: '#e5e7eb',
+    300: '#d1d5db',
+    400: '#9ca3af',
+    500: '#6b7280',
+    600: '#4b5563',
+    700: '#374151',
+    800: '#1f2937',
+    900: '#111827',
+  },
+  // Semantic singles map 1:1 to design-system tokens and are derived from them.
+  success: hslToHex(L.success),
+  error: hslToHex(L.destructive),
+  warning: hslToHex(L.warning),
+  info: hslToHex(L.info),
+  white: '#ffffff',
+  black: '#000000',
+  transparent: 'transparent',
+} as const;
+
+export interface ThemeColors {
+  primary: string;
+  background: string;
+  card: string;
+  text: string;
+  textSecondary: string;
+  textMuted: string;
+  border: string;
+  notification: string;
+  surface: string;
+  surfaceSecondary: string;
+  error: string;
+  errorBg: string;
+  success: string;
+  successBg: string;
+  successText: string;
+  warning: string;
+  info: string;
+  invertedText: string;
+  invertedBackground: string;
+}
 
 export const lightColors: ThemeColors = {
   primary: hslToHex(L.primary),
