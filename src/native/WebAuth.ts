@@ -36,3 +36,13 @@ export async function sha256Base64Url(input: string): Promise<string> {
   }
   throw new Error(`SHA-256 not implemented for ${Platform.OS}`);
 }
+
+/**
+ * Aggregate system-browser bridge, shaped for `@sudobility/auth_lib`'s
+ * `WebAuthBridge` so an app can wire desktop OAuth with `webAuth: WebAuth`.
+ */
+export const WebAuth = {
+  authenticate,
+  generateCodeVerifier,
+  sha256Base64Url,
+};

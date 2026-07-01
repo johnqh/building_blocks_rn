@@ -49,6 +49,7 @@ export type { I18nConfig } from './src/i18n';
 
 // Native modules (desktop only)
 export {
+  WebAuth,
   authenticate as webAuthAuthenticate,
   generateCodeVerifier as webAuthGenerateCodeVerifier,
   sha256Base64Url as webAuthSha256Base64Url,
