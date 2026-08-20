@@ -1,5 +1,10 @@
 # building_blocks_rn - AI Development Guide
 
+> **Git policy — never auto-commit or auto-push.** Leave your work in the working tree.
+> Run `git commit`, `git push`, `gh pr create`, or `scripts/push_all.sh` **only when the user
+> explicitly asks in that turn**. Approval for an earlier change does not carry forward, and
+> finishing a task is not permission to commit it.
+
 ## Overview
 
 Higher-level shared UI building blocks for Sudobility React Native apps. Provides pre-built screens (login, settings, subscriptions), theming, i18n, and app shell components -- the RN counterpart to `@sudobility/building_blocks` (web). This package is designed to be consumed by downstream Expo/React Native apps and supplies composable providers, themed components, and opinionated layout primitives.
@@ -471,3 +476,7 @@ The root `index.ts` and `firebase.ts` re-export from `src/` submodules. This sep
 | `eslint-plugin-react-hooks` | ^7.0.0 | React Hooks lint rules |
 | `@tanstack/react-query` | ^5.90.19 | Dev-time type checking |
 | `@sudobility/types` | ^1.9.53 | Dev-time type checking |
+
+## Git Workflow
+
+- Do not use feature branches for code changes. Always stay on the current branch.
