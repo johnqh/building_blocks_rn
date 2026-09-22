@@ -383,7 +383,8 @@ const useStyles = createThemedStyles(colors => ({
     borderRadius: 8,
     paddingVertical: 12,
     alignItems: 'center',
-    minHeight: 44,
+    // 48dp on Android; 44pt on iOS, macOS, and Windows.
+    minHeight: Platform.OS === 'android' ? 48 : 44,
     justifyContent: 'center',
   },
   socialButtonText: {
