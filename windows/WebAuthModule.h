@@ -1,8 +1,9 @@
 #pragma once
 
-#include "pch.h"
 #include "NativeModules.h"
 #include <winrt/Microsoft.ReactNative.h>
+#include <string>
+#include <vector>
 
 namespace BuildingBlocksRN {
 

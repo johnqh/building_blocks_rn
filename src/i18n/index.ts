@@ -10,6 +10,7 @@
 
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { getDeviceLocaleTags } from './deviceLocale';
 
 const DEFAULT_SUPPORTED_LANGUAGES = ['en'];
 
@@ -27,11 +28,9 @@ const DEFAULT_NAMESPACES = [
  */
 function detectDeviceLanguage(supportedLanguages: string[]): string {
   try {
-    // Try react-native-localize if available
-    const RNLocalize = require('react-native-localize');
-    const locales = RNLocalize.getLocales();
+    const locales = getDeviceLocaleTags();
     if (locales && locales.length > 0) {
-      const deviceLang = locales[0].languageCode;
+      const deviceLang = locales[0].split('-')[0].toLowerCase();
       if (supportedLanguages.includes(deviceLang)) {
         return deviceLang;
       }
@@ -107,4 +106,5 @@ export function getI18n(): typeof i18n {
 }
 
 export { i18n };
+export { getDeviceLocaleTags };
 export default i18n;

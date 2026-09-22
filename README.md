@@ -48,7 +48,18 @@ import {
 | `ToastProvider` / `useToast` | Animated toast notifications |
 | `createThemedStyles` | Memoized StyleSheet factory from theme colors |
 | `initializeI18nRN` | i18next setup with RN locale detection |
+| `getDeviceLocaleTags` | Ordered device locale tags, including Windows `Intl` detection |
 | `useResponsive` | Window dimension breakpoints (isSmall, isMedium, isLarge) |
+
+## Native desktop bridges
+
+- macOS native modules live in `macos/` and are included by the package's
+  CocoaPods specification. `WebAuthModule` is already shared here.
+- Windows native sources live in `windows/`. React Native Windows apps that use
+  these bridges manually include the relevant source files in their `.vcxproj`
+  and register attributed modules with `AddAttributedModules`. `WebAuthModule`
+  provides the PKCE/system-browser bridge; `FileSystemUtils.h` provides shared
+  Windows base64 encoding for app-specific file-system modules.
 
 ### Firebase Entry (`@sudobility/building_blocks_rn/firebase`)
 

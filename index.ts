@@ -44,7 +44,12 @@ export { ErrorBoundary } from './src/components/error';
 export type { ErrorBoundaryProps } from './src/components/error';
 
 // i18n
-export { initializeI18nRN, getI18n, i18n } from './src/i18n';
+export {
+  initializeI18nRN,
+  getI18n,
+  i18n,
+  getDeviceLocaleTags,
+} from './src/i18n';
 export type { I18nConfig } from './src/i18n';
 
 // Native modules (desktop only)
