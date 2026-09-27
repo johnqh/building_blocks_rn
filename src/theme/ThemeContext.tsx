@@ -21,7 +21,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Animated, useColorScheme } from 'react-native';
+import { Animated, Platform, useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Theme } from '../types';
 import { type ThemeColors, lightColors, darkColors } from './colors';
@@ -88,12 +88,20 @@ export function ThemeProvider({
   useEffect(() => {
     if (loaded && prevResolvedThemeRef.current !== resolvedTheme) {
       prevResolvedThemeRef.current = resolvedTheme;
+      // Desktop (react-native-macos / -windows) has no native driver for this
+      // animation: it never finishes there, leaving the whole app at 0.7
+      // opacity (washed out over the window background) after a theme switch.
+      // Only fade where the native driver exists, and always land on 1.
+      if (Platform.OS !== 'ios' && Platform.OS !== 'android') {
+        fadeAnim.setValue(1);
+        return;
+      }
       fadeAnim.setValue(0.7);
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 250,
         useNativeDriver: true,
-      }).start();
+      }).start(() => fadeAnim.setValue(1));
     }
   }, [resolvedTheme, loaded, fadeAnim]);
 
