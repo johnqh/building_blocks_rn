@@ -160,7 +160,7 @@ export default [
       '**/*.example.*',
       'node_modules/**',
       'vendor/**',
-      'react-native.config.js',
+      'react-native.config.cjs',
     ],
   },
 ];

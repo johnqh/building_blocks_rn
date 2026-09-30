@@ -32,8 +32,31 @@ export * from './src/types';
 export { createThemedStyles } from './src/utils';
 
 // Hooks
-export { useResponsive } from './src/hooks';
-export type { ResponsiveInfo } from './src/hooks';
+export {
+  useResponsive,
+  useNotchPosition,
+  useOrientation,
+  useSizeClasses,
+  NOTCH_POSITIONS,
+  ORIENTATIONS,
+  REGULAR_HEIGHT,
+  REGULAR_WIDTH,
+  SIZE_CLASSES,
+  notchPositionFor,
+  orientationFromInterface,
+  orientationFromWindow,
+  sizeClassFromInterface,
+  sizeClassesFromWindow,
+} from './src/hooks';
+export type {
+  ResponsiveInfo,
+  EdgeInsets,
+  NativeDeviceLayout,
+  NotchPosition,
+  Orientation,
+  SizeClass,
+  SizeClasses,
+} from './src/hooks';
 
 // Toast
 export { ToastProvider, useToast } from './src/components/toast';

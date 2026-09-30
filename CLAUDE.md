@@ -37,7 +37,7 @@ Exports everything that has zero Firebase dependency:
 - Constants (`DEFAULT_LANGUAGES`, `RTL_LANGUAGES`, `isRTL`)
 - All shared types (enums: `Theme`, `FontSize`; interfaces: `MenuItemConfig`, `LogoConfig`, `FooterLinkItem`, etc.)
 - Utility: `createThemedStyles`
-- Hooks: `useResponsive`
+- Hooks: `useResponsive`, `useOrientation`, `useSizeClasses`, `useNotchPosition` (see **Device layout** below)
 - Toast: `ToastProvider`, `useToast`
 - i18n: `initializeI18nRN`, `getI18n`, `i18n`
 
@@ -480,3 +480,13 @@ The root `index.ts` and `firebase.ts` re-export from `src/` submodules. This sep
 ## Git Workflow
 
 - Do not use feature branches for code changes. Always stay on the current branch.
+
+## Device layout
+
+`useOrientation()` answers `portrait`, `portraitUpsideDown`, `landscapeLeft` or `landscapeRight`; `useSizeClasses()` answers iOS's `compact`/`regular` per axis on every platform; `useNotchPosition()` answers which edge the notch is at as the device is held now, or `null` on a device without one. The rules are pure functions in `src/hooks/device-layout.ts`, tested on their own.
+
+- **`landscapeLeft` means the notch is on the left.** That is what a layout needs to know. UIKit's `UIInterfaceOrientationLandscapeLeft` turns out to mean the same side — **measured on an iPhone**, against its documentation's talk of home buttons, which reads the other way and had the first mapping backwards, padding the right when the island was on the left. `orientationFromInterface` is the one place the two meet; do not "fix" it from the docs.
+- **iOS answers natively** (`ios/DeviceLayoutModule.m`, an `RCTEventEmitter`; `building_blocks_rn.podspec`, one spec for iOS and macOS, so a consumer has to `pod install` after taking this version). JavaScript can see the window's shape and the safe area, but iOS insets both sides of a landscape iPhone alike, so which side the notch is on cannot be read from them; the size classes cannot be read at all. The module's constants carry the first answer synchronously, so the first render is right rather than a guess.
+- **Every other platform estimates**: Android's cutout insets the one side it is on, which is enough for the orientation; size classes are drawn at `REGULAR_WIDTH`/`REGULAR_HEIGHT`, near where iOS draws its own. A consumer that has not run `pod install` is treated as such a platform, not as broken.
+- **Whether there is a notch is read off the insets**: an inset on a landscape side, or a top inset past the status bar's own height. A phone without one has no side to clear, and `useNotchPosition` says so with `null` rather than naming a side there is nothing on.
+- **The config file is `react-native.config.cjs`, and the podspec is named after the package folder.** This package is `"type": "module"`, so a `react-native.config.js` is loaded as ESM and its `module.exports` is never seen — the CLI read `{}` and linked nothing on iOS. And autolinking ignores `podspecPath` in that config anyway: it takes `<folder>.podspec` if one exists and the first `*.podspec` by name otherwise, which with an iOS and a macOS spec side by side was the macOS one for iOS. So there is one `building_blocks_rn.podspec` with per-platform sources.
