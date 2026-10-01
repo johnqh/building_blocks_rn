@@ -122,6 +122,7 @@ void WebAuthModule::authenticate(
   // Launch authentication on a background thread to avoid blocking UI
   std::thread([url = std::move(url), callbackScheme = std::move(callbackScheme),
                result = std::move(result)]() mutable {
+    (void)callbackScheme; // the macOS mechanism; Windows uses a loopback
     // Initialize Winsock for this thread
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
@@ -166,16 +167,33 @@ void WebAuthModule::authenticate(
       return;
     }
 
-    // Build the redirect URI and full auth URL
+    // The loopback redirect Google returns to. A loopback redirect is only
+    // accepted for a "Desktop app" OAuth client, and the token exchange must
+    // send this exact URI again, which is why the callback below is returned
+    // as this URI rather than rewritten into another scheme.
     std::string redirectUri =
         "http://127.0.0.1:" + std::to_string(port) + "/callback";
+    std::string encodedRedirect =
+        "http%3A%2F%2F127.0.0.1%3A" + std::to_string(port) + "%2Fcallback";
 
-    // Append redirect_uri to the auth URL
+    // Replace the URL's redirect_uri (auth_lib builds the URL with a
+    // placeholder, since only this module knows the port), or add one.
     std::string fullUrl = url;
-    if (fullUrl.find('?') != std::string::npos)
-      fullUrl += "&redirect_uri=" + redirectUri;
-    else
-      fullUrl += "?redirect_uri=" + redirectUri;
+    const std::string key = "redirect_uri=";
+    auto keyPos = fullUrl.find("?" + key);
+    if (keyPos == std::string::npos) keyPos = fullUrl.find("&" + key);
+    if (keyPos != std::string::npos) {
+      const auto valueStart = keyPos + 1 + key.size();
+      const auto valueEnd = fullUrl.find('&', valueStart);
+      fullUrl.replace(valueStart,
+                      (valueEnd == std::string::npos ? fullUrl.size()
+                                                     : valueEnd) -
+                          valueStart,
+                      encodedRedirect);
+    } else {
+      fullUrl += (fullUrl.find('?') != std::string::npos ? "&" : "?") + key +
+                 encodedRedirect;
+    }
 
     // Open browser
     std::wstring wUrl(fullUrl.begin(), fullUrl.end());
@@ -232,9 +250,11 @@ void WebAuthModule::authenticate(
         result.Resolve(React::JSValue{nullptr});
         return;
       }
-      // Reconstruct the full callback URL
-      std::string callbackUrl =
-          callbackScheme + "://callback" + path.substr(qPos);
+      // The callback as Google sent it: the loopback redirect plus its query.
+      // auth_lib recognises the loopback origin and exchanges the code with
+      // exactly this redirect URI. (callbackScheme is unused here: a custom
+      // scheme is the macOS mechanism, not this one.)
+      std::string callbackUrl = redirectUri + path.substr(qPos);
       result.Resolve(React::JSValue{callbackUrl});
     } else {
       result.Resolve(React::JSValue{nullptr});
