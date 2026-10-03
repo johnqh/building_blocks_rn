@@ -15,7 +15,7 @@ import {
   SudobilityAppRN,
   ThemeProvider,
   useTheme,
-  LoginScreen,
+  LoginPage,
   AppScreenLayout,
   ToastProvider,
   useToast,
@@ -38,7 +38,7 @@ import {
 | Export | Description |
 |--------|-------------|
 | `SudobilityAppRN` | Base app wrapper composing providers (SafeArea, Theme, Toast, i18n, Query) |
-| `LoginScreen` | Email/password + OAuth login screen |
+| `LoginPage` | Full-screen sign-in page: app name, a heading that follows the mode, and `LoginView` from `@sudobility/components-rn` (email, sign-up, password reset, Google, Apple). For sign-in in the middle of a flow use components-rn's `LoginModal`. Mirrors the web `LoginPage` |
 | `AppScreenLayout` | SafeAreaView wrapper with optional header/footer |
 | `AppSubscriptionPage` | Subscription management with status and packages |
 | `SettingsListScreen` | Settings menu with icon rows |

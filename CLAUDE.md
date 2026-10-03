@@ -30,7 +30,7 @@ The package is split into two entry points to allow apps that do not use Firebas
 
 Exports everything that has zero Firebase dependency:
 
-- All components: header, footer, layout, settings, pages (LoginScreen, AppTextScreen, AppSubscriptionPage)
+- All components: header, footer, layout, settings, pages (LoginPage, AppTextScreen, AppSubscriptionPage)
 - `SudobilityAppRN` app wrapper
 - Subscription context (`SafeSubscriptionContext`, `useSafeSubscription`, `SubscriptionScreen`)
 - Full theme system (`ThemeProvider`, `useTheme`, `useThemeSafe`, palette, colors, spacing, typography)
@@ -83,7 +83,7 @@ building_blocks_rn/
     │   │   └── AppScreenLayout.tsx         # SafeArea + ScrollView screen wrapper
     │   ├── pages/
     │   │   ├── index.ts
-    │   │   ├── LoginScreen.tsx             # Email/password + OAuth login
+    │   │   ├── LoginPage.tsx               # Full-screen sign-in around components-rn LoginView
     │   │   ├── AppTextScreen.tsx           # Structured text content (privacy, terms)
     │   │   └── AppSubscriptionPage.tsx     # Full subscription page with status
     │   ├── settings/
@@ -140,12 +140,23 @@ Extends `SudobilityAppRN` by adding Firebase auth and API layers. Wraps children
 
 ### Screens
 
-**`LoginScreen`** (`src/components/pages/LoginScreen.tsx`)
-- Email/password form with sign-in and sign-up toggle
-- Optional Google and Apple OAuth buttons (`showGoogleSignIn`, `showAppleSignIn`)
-- KeyboardAvoidingView with platform-aware behavior (padding on iOS, height on Android)
-- Loading states with ActivityIndicator, inline error display
-- Props: `appName`, `logo`, `onLogin`, `onSignUp`, `onGoogleSignIn`, `onAppleSignIn`
+**`LoginPage`** (`src/components/pages/LoginPage.tsx`) — the web `LoginPage`, prop for prop
+- **The sign-in architecture mirrors the web's, and this is one third of it.** `LoginView`
+  (components-rn) is the form — email, sign-up, password reset, Google, Apple — and brings no
+  page. `LoginPage` (here) is that form on a full screen: app name, a heading that follows the
+  mode, the subtle page background. `LoginModal` (components-rn) is the same form in a modal.
+  A screen somebody *navigates to* to sign in uses `LoginPage`; sign-in that *interrupts a flow*
+  uses `LoginModal`, leaving them where they were.
+- Props: `appName`, `logo`, `onEmailSignIn`, `onEmailSignUp`, `onPasswordReset`,
+  `onGoogleSignIn`, `onAppleSignIn`, `onSuccess`, `onAuthError`, `showGoogleSignIn` (default
+  true), `showAppleSignIn` (default false), `showSignUp`, `text` (`LoginPageText` = the view's
+  strings + `signInToAccount`/`createAccount`/`resetPassword`), `colorVariant`, `appleLogoTone`.
+- **No class is written here that an app would have to scan this package for.** Apps' Tailwind
+  configs scan components-rn, not building_blocks_rn, so every colour comes through a
+  components-rn component (`PageContainer`'s `bg-muted`, `Heading`, `LoginView`'s
+  `linkClassName`) with classes that also occur in components-rn's own source; layout is `style`.
+- It needs no `ThemeProvider` from this package: it follows the app's NativeWind theme.
+- `LoginScreen`, the hand-built form it replaced (no reset, its own theme), is deleted.
 
 **`AppTextScreen`** (`src/components/pages/AppTextScreen.tsx`)
 - Renders structured `TextPageContent` (title, sections with subsections, bullet lists, contact block)
