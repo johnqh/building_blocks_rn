@@ -62,6 +62,32 @@ describe('LoginPage', () => {
     expect(getByText('Reset your password')).toBeTruthy();
   });
 
+  it('opens on the form initialMode asks for, if it can do it', async () => {
+    const { getByText, unmount } = await render(
+      <LoginPage
+        appName='TestApp'
+        onEmailSignIn={handler()}
+        onEmailSignUp={handler()}
+        onSuccess={vi.fn()}
+        initialMode='signUp'
+      />
+    );
+    expect(getByText('Create your account')).toBeTruthy();
+    expect(viewProps.current!.mode).toBe('signUp');
+    unmount();
+
+    const again = await render(
+      <LoginPage
+        appName='TestApp'
+        onEmailSignIn={handler()}
+        onSuccess={vi.fn()}
+        initialMode='signUp'
+      />
+    );
+    expect(again.getByText('Sign in to your account')).toBeTruthy();
+    expect(viewProps.current!.mode).toBe('signIn');
+  });
+
   it('hands the form only what it is configured to offer', async () => {
     await render(
       <LoginPage
